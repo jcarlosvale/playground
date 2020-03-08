@@ -20,6 +20,10 @@ public class OCP11 extends SomeClass{
         System.out.println(w);
     }
 
+    public void someMethdd() {
+        return;
+    }
+
     private static void usingVar() {
         int [] x = {1,2,3};
         for(var i : x)
