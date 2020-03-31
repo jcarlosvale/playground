@@ -50,8 +50,8 @@ public class ReverseWordsTest {
     @Test
     public void reverse5() {
         char[] actual =
-                ReverseWords.reverseWords(new char[]{'l', 'o', 'v', 'e'});
-        char[] expected = new char[]{'e','v','o','l'};
+                ReverseWords.reverseWords(new char[]{'t', 'e', 's', 't'});
+        char[] expected = new char[]{'t','s','e','t'};
         assertArrayEquals(expected, actual);
     }
 

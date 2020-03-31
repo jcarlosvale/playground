@@ -1,5 +1,7 @@
 package tests.crackCode.lista;
 
+import java.util.*;
+
 public class Node {
     Node next;
     int data;
@@ -37,6 +39,18 @@ public class Node {
         System.out.println(raiz);
         raiz = raiz.deleteNode(raiz,2);
         System.out.println(raiz);
+
+        String x = " ";
+        System.out.println(x.length());
+
+        int [] arr = { 1,2,3};
+        System.out.println(arr.length);
+
+        List<Integer> y = new ArrayList<>();
+        System.out.println(y.size());
+
+        Set<Integer> set = new HashSet<>();
+        System.out.println(set.size());
     }
 
 }
