@@ -47,10 +47,10 @@ public class MeetupSchedule {
 
         for(Map.Entry<Integer, TreeMap<Integer, List<Integer>>> entryMapDuration : mapOfInvestorByDuration.entrySet()) {
             for(Map.Entry<Integer, List<Integer>> entryMapStart : entryMapDuration.getValue().entrySet()) {
-                int start = entryMapStart.getKey();
-                int duration = entryMapDuration.getKey();
-                List<Integer> listInvestor = entryMapStart.getValue();
-                int index = start - minDay;
+                final int start = entryMapStart.getKey();
+                final int duration = entryMapDuration.getKey();
+                final List<Integer> listInvestor = entryMapStart.getValue();
+                final int index = start - minDay;
                 for(Integer investor : listInvestor) {
                     if(schedules[index] == -1) {
                         schedules[index] = investor;
@@ -58,11 +58,14 @@ public class MeetupSchedule {
                         if(cont  == maxDay-minDay+1) return maxDay-minDay+1;
                         if(cont == firstDay.size()) return firstDay.size();
                     } else {
-                        while(duration > 0) {
-                            index++;
-                            duration --;
-                            if(schedules[index] == -1) {
-                                schedules[index] = investor;
+                        int tempIndex = index;
+                        int tempDuration = duration;
+                        while(tempDuration >= 0) {
+                            tempIndex++;
+                            tempDuration --;
+                            if (tempIndex >= schedules.length) break;
+                            if(schedules[tempIndex] == -1) {
+                                schedules[tempIndex] = investor;
                                 cont++;
                                 if(cont  == maxDay-minDay+1) return maxDay-minDay+1;
                                 if(cont == firstDay.size()) return firstDay.size();
@@ -73,11 +76,15 @@ public class MeetupSchedule {
                 }
             }
         }
+        for(int i = 0; i<schedules.length; i++) {
+            if (schedules[i] == -1) System.out.print(i + " ");
+        }
         return cont;
     }
 
     public static void main(String[] args) {
-        System.out.println(countMeetings(List.of(1,2,3,3,3), List.of(2,2,3,4,4)));
-        System.out.println(countMeetings(List.of(1,2,1,2,2), List.of(3,2,1,3,3)));
+        System.out.println(countMeetings(List.of(1,2,3,3,3), List.of(2,2,3,4,4)));  //4
+        System.out.println(countMeetings(List.of(1,2,1,2,2), List.of(3,2,1,3,3))); //3
+        System.out.println(countMeetings(List.of(1,1,1,1,1), List.of(2,2,2,4,2))); //3
     }
 }
