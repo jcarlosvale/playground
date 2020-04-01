@@ -55,8 +55,8 @@ public class MeetupSchedule {
                     if(schedules[index] == -1) {
                         schedules[index] = investor;
                         cont++;
-                        if(cont  >= maxDay-minDay+1) return maxDay-minDay+1;
-                        if(cont >= firstDay.size()) return firstDay.size();
+                        if(cont  == maxDay-minDay+1) return maxDay-minDay+1;
+                        if(cont == firstDay.size()) return firstDay.size();
                     } else {
                         while(duration > 0) {
                             index++;
@@ -64,9 +64,10 @@ public class MeetupSchedule {
                             if(schedules[index] == -1) {
                                 schedules[index] = investor;
                                 cont++;
+                                if(cont  == maxDay-minDay+1) return maxDay-minDay+1;
+                                if(cont == firstDay.size()) return firstDay.size();
+                                break;
                             }
-                            if(cont  >= maxDay-minDay+1) return maxDay-minDay+1;
-                            if(cont >= firstDay.size()) return firstDay.size();
                         }
                     }
                 }
