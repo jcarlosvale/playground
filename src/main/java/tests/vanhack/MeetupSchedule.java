@@ -14,60 +14,69 @@ public class MeetupSchedule {
      */
 
     public static int countMeetings(List<Integer> firstDay, List<Integer> lastDay) {
-        TreeMap<Integer, List<Integer>> mapOfInvestorByDay = new TreeMap<>();
+        TreeMap<Integer, TreeMap<Integer, List<Integer>>> mapOfInvestorByDuration = new TreeMap<>();
+        int maxDay = Integer.MIN_VALUE;
+        int minDay = Integer.MAX_VALUE;
         //iterate over each investor and fill the map
         for (int i = 0; i < firstDay.size(); i++) {
             int start = firstDay.get(i);
             int end = lastDay.get(i);
-            while(start <= end) {
-                if (mapOfInvestorByDay.containsKey(start)) {
-                    mapOfInvestorByDay.get(start).add(i);
-                } else {
-                    List<Integer> investorAvailableList = new ArrayList<>();
-                    investorAvailableList.add(i);
-                    mapOfInvestorByDay.put(start, investorAvailableList);
+            if (start < minDay) minDay = start;
+            if (end > maxDay) maxDay = end;
+            int duration = end-start;
+            if (mapOfInvestorByDuration.containsKey(duration)) {
+                TreeMap<Integer, List<Integer>> mapStart = mapOfInvestorByDuration.get(duration);
+                List<Integer> listStart = mapStart.get(start);
+                if (listStart == null) {
+                    listStart = new ArrayList<>();
                 }
-                start ++;
+                listStart.add(i);
+                mapStart.put(start, listStart);
+            } else {
+                TreeMap<Integer, List<Integer>> mapStart = new TreeMap<>();
+                List<Integer> listStart = new ArrayList<>();
+                listStart.add(i);
+                mapStart.put(start, listStart);
+                mapOfInvestorByDuration.put(duration,mapStart);
             }
         }
-        //iterate day by day
-        int startDay = mapOfInvestorByDay.firstKey();
-        int endDay = mapOfInvestorByDay.lastKey();
-        int maxResult = endDay - startDay + 1;
-        List<Set<Integer>> listOfCandidates = new ArrayList<>();
-        for(int day = startDay; day <= endDay; day++) {
-            List<Integer> listOfAvailableInvestors = mapOfInvestorByDay.get(day);
-            List<Set<Integer>> currentListOfCandidates = new ArrayList<>();
-            if (listOfAvailableInvestors != null) {
-                for(int availableInvestor : listOfAvailableInvestors) {
-                    if (listOfCandidates.isEmpty()) {
-                        Set<Integer> currentSet = new HashSet<>();
-                        currentSet.add(availableInvestor);
-                        currentListOfCandidates.add(currentSet);
-                        if (currentSet.size() == maxResult) return maxResult;
+        //iterate by duration
+        int cont = 0;
+        int [] schedules = new int[maxDay-minDay+1];
+        Arrays.fill(schedules,-1);
+
+        for(Map.Entry<Integer, TreeMap<Integer, List<Integer>>> entryMapDuration : mapOfInvestorByDuration.entrySet()) {
+            for(Map.Entry<Integer, List<Integer>> entryMapStart : entryMapDuration.getValue().entrySet()) {
+                int start = entryMapStart.getKey();
+                int duration = entryMapDuration.getKey();
+                List<Integer> listInvestor = entryMapStart.getValue();
+                int index = start - minDay;
+                for(Integer investor : listInvestor) {
+                    if(schedules[index] == -1) {
+                        schedules[index] = investor;
+                        cont++;
+                        if(cont  >= maxDay-minDay+1) return maxDay-minDay+1;
+                        if(cont >= firstDay.size()) return firstDay.size();
                     } else {
-                        for(Set<Integer> candidate : listOfCandidates) {
-                            Set<Integer> currentSet = new HashSet<>(candidate);
-                            currentSet.add(availableInvestor);
-                            currentListOfCandidates.add(currentSet);
-                            if (currentSet.size() == maxResult) return maxResult;
+                        while(duration > 0) {
+                            index++;
+                            duration --;
+                            if(schedules[index] == -1) {
+                                schedules[index] = investor;
+                                cont++;
+                            }
+                            if(cont  >= maxDay-minDay+1) return maxDay-minDay+1;
+                            if(cont >= firstDay.size()) return firstDay.size();
                         }
                     }
                 }
             }
-            listOfCandidates = currentListOfCandidates;
         }
-        //didn't find the maximum
-        int max = 0;
-        for(Set<Integer> candidate: listOfCandidates) {
-            if (candidate.size() > max) max = candidate.size();
-        }
-        return max;
+        return cont;
     }
 
     public static void main(String[] args) {
         System.out.println(countMeetings(List.of(1,2,3,3,3), List.of(2,2,3,4,4)));
         System.out.println(countMeetings(List.of(1,2,1,2,2), List.of(3,2,1,3,3)));
-
     }
 }
