@@ -2,8 +2,12 @@ package tests.leetcode.challenge30days;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
+/**
+ * Given an integer array arr, count element x such that x + 1 is also in arr.
+ *
+ * If there're duplicates in arr, count them seperately.
+ */
 public class CountingElements {
 
     public static int countElements(int[] arr) {

@@ -2,6 +2,10 @@ package tests.leetcode.challenge30days;
 
 import java.util.Arrays;
 
+/**
+ * Given an array nums of n integers where n > 1,
+ * return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+ */
 public class ProductArray {
 
     public static int[] productExceptSelf(int[] nums) {

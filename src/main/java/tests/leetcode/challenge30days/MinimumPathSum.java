@@ -12,88 +12,66 @@ import java.util.*;
  */
 public class MinimumPathSum {
 
-    static class Indexes {
-        int i;
-        int j;
-        Indexes(int i, int j) {
-            this.i = i;
-            this.j = j;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Indexes indexes = (Indexes) o;
-            return i == indexes.i && j == indexes.j;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(i, j);
-        }
-    }
-
     public static int minPathSum(int[][] grid) {
-        Map<Indexes,Integer> mapOfCosts = new HashMap<>();
+        boolean [] [] visited = new boolean[grid.length][grid[0].length];
+        int [] [] costs = new int[grid.length][grid[0].length];
         //costs matrix
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                mapOfCosts.put(new Indexes(i,j), Integer.MAX_VALUE);
+                costs[i][j] = Integer.MAX_VALUE;
             }
         }
         //dijkstra
-        return calculate(grid, mapOfCosts);
+        return calculate(grid, costs, visited);
     }
 
-    private static int calculate(int[][] grid, Map<Indexes, Integer> mapOfCosts) {
-        Set<Indexes> visited = new HashSet<>();
+    private static int calculate(int[][] grid, int [] [] costs, boolean [] [] visited) {
         //first node
-        mapOfCosts.put(new Indexes(0,0),grid[0][0]);
-        visited.add(new Indexes(0,0));
-        Set<Indexes> neighbors = getNeihgborsWithUpdatedCost(0, 0, grid, mapOfCosts, visited);
-        while(!neighbors.isEmpty()) {
-            Indexes node = selectNextNode(neighbors, mapOfCosts);
-            visited.add(node);
-            neighbors.addAll(getNeihgborsWithUpdatedCost(node.i, node.j, grid, mapOfCosts, visited));
-            neighbors.remove(node);
+        int i = 0;
+        int j = 0;
+        costs[i][j] = grid[i][j];
+        visited[i][j] = true;
+        updateCostOfNeighbors(i, j, grid, costs, visited);
+        for(int count = 1; count < visited.length * visited[0].length; count++) {
+            //select next node
+            int tempCost = Integer.MAX_VALUE;
+            for (int i1 = 0; i1 < grid.length; i1++) {
+                for (int j1 = 0; j1 < grid[i1].length; j1++) {
+                    if (visited[i1][j1]) continue;
+                    if (costs[i1][j1] == Integer.MAX_VALUE) continue;
+                    if (costs[i1][j1] < tempCost) {
+                        i = i1;
+                        j = j1;
+                        tempCost = costs[i1][j1];
+                    }
+                }
+            }
+            visited[i][j] = true;
+            updateCostOfNeighbors(i, j, grid, costs, visited);
         }
-        return mapOfCosts.get(new Indexes(grid.length-1, grid[0].length-1));
+        return costs[grid.length-1][grid[0].length-1];
     }
 
-    private static Indexes selectNextNode(Set<Indexes> neighbors, Map<Indexes, Integer> mapOfCosts) {
-        PriorityQueue<Indexes> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(mapOfCosts::get));
-        priorityQueue.addAll(neighbors);
-        return priorityQueue.poll();
-    }
-
-    private static Set<Indexes> getNeihgborsWithUpdatedCost(int i, int j, int[][] grid,
-                                                             Map<Indexes, Integer> mapOfCosts, Set<Indexes> visited) {
-        int cost = mapOfCosts.get(new Indexes(i,j));
-        Set<Indexes> neighbors = new HashSet<>();
+    private static void updateCostOfNeighbors(int i, int j, int[][] grid, int [] [] costs, boolean [] [] visited) {
+        int cost = costs[i][j];
         //right
         if (j+1 < grid[i].length) {
-            Indexes candidate = new Indexes(i, j + 1);
             int candidateCost = grid[i][j+1];
-            if(!visited.contains(candidate)) {
-                if (mapOfCosts.get(candidate) > cost + candidateCost) {
-                    mapOfCosts.put(candidate, cost + candidateCost);
+            if(!visited[i][j+1]) {
+                if (costs[i][j+1] > cost + candidateCost) {
+                    costs[i][j+1] = cost + candidateCost;
                 }
-                neighbors.add(candidate);
             }
         }
         //down
         if (i+1 < grid.length) {
-            Indexes candidate = new Indexes(i+1, j);
             int candidateCost = grid[i+1][j];
-            if(!visited.contains(candidate)) {
-                if (mapOfCosts.get(candidate) > cost + candidateCost) {
-                    mapOfCosts.put(candidate, cost + candidateCost);
+            if(!visited[i+1][j]) {
+                if (costs[i+1][j] > cost + candidateCost) {
+                    costs[i+1][j] = cost + candidateCost;
                 }
-                neighbors.add(candidate);
             }
         }
-        return neighbors;
     }
 
     public static void main(String[] args) {

@@ -2,6 +2,23 @@ package tests.leetcode.challenge30days;
 
 import java.util.*;
 
+/**
+ * Given an array of strings, group anagrams together.
+ *
+ * Example:
+ *
+ * Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+ * Output:
+ * [
+ *   ["ate","eat","tea"],
+ *   ["nat","tan"],
+ *   ["bat"]
+ * ]
+ * Note:
+ *
+ * All inputs will be in lowercase.
+ * The order of your output does not matter.
+ */
 public class GroupAnagrams {
     public static List<List<String>> groupAnagrams(String[] strs) {
         Map<Map<Character, Integer>, List<String>> anagramsMap = new HashMap<>();

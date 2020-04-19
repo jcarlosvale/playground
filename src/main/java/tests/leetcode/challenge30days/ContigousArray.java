@@ -3,6 +3,9 @@ package tests.leetcode.challenge30days;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Given a binary array, find the maximum length of a contiguous subarray with equal number of 0 and 1.
+ */
 public class ContigousArray {
 
     public static int findMaxLength(int[] nums) {
