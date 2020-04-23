@@ -21,30 +21,24 @@ public class BitwiseANDNumbersRange {
     public static int rangeBitwiseAnd(int m, int n) {
         if (m == 0) return 0;
         if (m == n) return n;
-        BitSet max = convert(n);
+
         BitSet min = convert(m);
+        BitSet dif = convert(n);
+        dif.and(min);
 
-        int higherMostLeft = max.nextSetBit(max.length()-1);
-        int lowerMostLeft = min.nextSetBit(min.length()-1);
-
-
-        max.and(min);
+        if (dif.isEmpty()) return 0;
 
         TreeSet<Integer> setOfBits = new TreeSet<>();
-        for (int i = max.nextSetBit(0); i >= 0; i = max.nextSetBit(i+1)) {
+        for (int i = dif.nextSetBit(0); i >= 0; i = dif.nextSetBit(i+1)) {
             setOfBits.add(i);
         }
-        List<Integer> bitsToRemove = new ArrayList<>();
-        for(int pos : setOfBits) {
 
-            for(int i = lowerMostLeft; i<=higherMostLeft; i++) {
-                BitSet temp = convert((int) Math.pow(2,i+1)-1);
-                temp.clear(pos);
-                int number = convert(temp);
-                if(number >= m && number<=n) {
-                    bitsToRemove.add(pos);
-                    break;
-                }
+        List<Integer> bitsToRemove = new ArrayList<>();
+        for(int i : setOfBits) {
+            BitSet temp = convert(m + (int) Math.pow(2, i));
+            int number = convert(temp);
+            if (number >= m && number <= n) {
+                bitsToRemove.add(i);
             }
         }
         setOfBits.removeAll(bitsToRemove);
@@ -77,17 +71,19 @@ public class BitwiseANDNumbersRange {
     }
 
     public static void main(String[] args) {
-//        System.out.println(rangeBitwiseAnd(5,7)); //4
-//        System.out.println(rangeBitwiseAnd(6,7)); //6
-//        System.out.println(rangeBitwiseAnd(0,1)); //0
-//        System.out.println(rangeBitwiseAnd(0,1)); //0
-//        System.out.println(rangeBitwiseAnd(1,4)); //0
-//        System.out.println(rangeBitwiseAnd(20000,2147483647)); //0
-//        System.out.println(rangeBitwiseAnd(600000000,2147483645)); //0
-//        System.out.println(rangeBitwiseAnd(1,3)); //0
-//        System.out.println(rangeBitwiseAnd(3,3)); //3
-//        System.out.println(rangeBitwiseAnd(1,5)); //0
+        System.out.println(rangeBitwiseAnd(5,7)); //4
+        System.out.println(rangeBitwiseAnd(6,7)); //6
+        System.out.println(rangeBitwiseAnd(0,1)); //0
+        System.out.println(rangeBitwiseAnd(0,1)); //0
+        System.out.println(rangeBitwiseAnd(1,4)); //0
+        System.out.println(rangeBitwiseAnd(20000,2147483647)); //0
+        System.out.println(rangeBitwiseAnd(600000000,2147483645)); //0
+        System.out.println(rangeBitwiseAnd(1,3)); //0
+        System.out.println(rangeBitwiseAnd(3,3)); //3
+        System.out.println(rangeBitwiseAnd(1,5)); //0
         System.out.println(rangeBitwiseAnd(3,5)); //0
+        System.out.println(rangeBitwiseAnd(11,13)); //8
+
 
     }
 }
