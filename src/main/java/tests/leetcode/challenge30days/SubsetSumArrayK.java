@@ -13,36 +13,22 @@ import java.util.*;
 public class SubsetSumArrayK {
     public static int subarraySum(int[] nums, int k) {
         int count = 0;
-        LinkedList<Integer> sums = new LinkedList<>();
-        int sum = 0;
-        //accumulative sum by index mapping
+        int[] previousSums= new int[nums.length];
+        int sum;
         for (int i = 0; i < nums.length; i++) {
             if(nums[i] == k) {
                 count++;
             }
-            LinkedList<Integer> tempSums = new LinkedList<>();
-            Set<Integer> sumSet = new HashSet<>();
-
-            for (int j:sums) {
-                sum = nums[i] + j;
+            int[] currentSums = new int[nums.length];
+            currentSums[0] = nums[i];
+            for (int j = 1; j <= i; j++) {
+                sum = nums[i] + previousSums[j-1];
+                currentSums[j] = sum;
                 if (sum == k){
                     count++;
                 }
-                if(!sumSet.contains(sum)) {
-                    tempSums.add(sum);
-                    sumSet.add(sum);
-                }
             }
-            if (sums.isEmpty()) {
-                tempSums.addFirst(nums[i]);
-                sumSet.add(nums[i]);
-            } else {
-                if(!sumSet.contains(nums[i])) {
-                    tempSums.addFirst(nums[i]);
-                    sumSet.add(nums[i]);
-                }
-            }
-            sums = tempSums;
+            previousSums = currentSums;
         }
         return count;
     }
@@ -57,10 +43,10 @@ public class SubsetSumArrayK {
  */
 
     public static void main(String[] args) {
-//        System.out.println(subarraySum(new int[]{1,2,3,4,5},15));//1
-//        System.out.println(subarraySum(new int[]{1,1,1},2));//2
-//        System.out.println(subarraySum(new int[]{1,0,1},1));//4
-//        System.out.println(subarraySum(new int[]{-1,-1,1},0));//4
+        System.out.println(subarraySum(new int[]{1,2,3,4,5},15));//1
+        System.out.println(subarraySum(new int[]{1,1,1},2));//2
+        System.out.println(subarraySum(new int[]{1,0,1},1));//4
+        System.out.println(subarraySum(new int[]{-1,-1,1},0));//1
         System.out.println(subarraySum(new int[]{0,0,0,0,0,0,0,0,0,0},0)); //55
 
 
