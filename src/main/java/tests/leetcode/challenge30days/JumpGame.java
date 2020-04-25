@@ -21,30 +21,13 @@ package tests.leetcode.challenge30days;
  */
 public class JumpGame {
     public static boolean canJump(int[] nums) {
-        if(nums.length == 1) return true;
-        //matrix of adjacency
-        boolean [] [] adjacencyMatrix = new boolean[nums.length][nums.length];
-        //building
-        for (int i = 0; i < nums.length; i++) {
-            int limit = i+nums[i];
-            if (limit >= nums.length) limit = nums.length-1;
-            for (int j = i; j <= limit ; j++) {
-                adjacencyMatrix[i][j] = true;
+        int lastPos = nums.length - 1;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (i + nums[i] >= lastPos) {
+                lastPos = i;
             }
         }
-        //Roy-Warshall
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < nums.length ; j++) {
-                for (int k = 0; k < nums.length; k++) {
-                    if (adjacencyMatrix[i][j]) {
-                        if (adjacencyMatrix[i][k] || adjacencyMatrix[j][k]) {
-                            adjacencyMatrix[i][k] = true;
-                        }
-                    }
-                }
-            }
-        }
-        return adjacencyMatrix[0][nums.length-1];
+        return lastPos == 0;
     }
 
     public static void main(String[] args) {
