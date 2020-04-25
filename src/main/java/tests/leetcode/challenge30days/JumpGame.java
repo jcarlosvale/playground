@@ -33,21 +33,25 @@ public class JumpGame {
             }
         }
         //Roy-Warshall
-
-        for (int j = 1; j < nums.length ; j++) {
-            if (adjacencyMatrix[0][j]) {
-                int k = nums.length-1;
-                if (adjacencyMatrix[0][k] || adjacencyMatrix[j][k]) return true;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length ; j++) {
+                for (int k = 0; k < nums.length; k++) {
+                    if (adjacencyMatrix[i][j]) {
+                        if (adjacencyMatrix[i][k] || adjacencyMatrix[j][k]) {
+                            adjacencyMatrix[i][k] = true;
+                        }
+                    }
+                }
             }
         }
-
-
-        return false;
+        return adjacencyMatrix[0][nums.length-1];
     }
 
     public static void main(String[] args) {
         System.out.println(canJump(new int[]{2,3,1,1,4})); //true
         System.out.println(canJump(new int[]{3,2,1,0,4})); //false
         System.out.println(canJump(new int[]{0})); //true
+        System.out.println(canJump(new int[]{1,1,1,0})); //true
+
     }
 }
