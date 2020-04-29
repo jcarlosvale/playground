@@ -57,14 +57,19 @@ public class TreeMaxPathSum {
     }
 
     public static int maxPathSum(TreeNode root) {
-        if (root == null) {
-            return 0;
+        int sum = root.val;
+        int bothSides = root.val;
+        if (root.left != null) {
+            int leftSum = maxPathSum(root.left);
+            sum = Math.max(leftSum, root.val + leftSum);
+            bothSides += leftSum;
         }
-        int leftSum = maxPathSum(root.left);
-        int rightSum = maxPathSum(root.right);
-        int bothSides = rightSum + leftSum + root.val;
-        return Math.max(Math.max(Math.max(Math.max(leftSum, root.val + leftSum),
-                        Math.max(rightSum, root.val + rightSum)), bothSides), root.val);
+        if (root.right != null) {
+            int rightSum = maxPathSum(root.right);
+            sum = Math.max(sum, Math.max(rightSum, root.val + rightSum));
+            bothSides += rightSum;
+        }
+        return Math.max(Math.max(root.val, bothSides), sum);
     }
 
     public static void main(String[] args) {
@@ -72,6 +77,11 @@ public class TreeMaxPathSum {
         System.out.println(maxPathSum(treeNode)); //6
 
         treeNode = new TreeNode(-3);
-        System.out.println(maxPathSum(treeNode)); //6
+        System.out.println(maxPathSum(treeNode)); //-3
+
+        treeNode = new TreeNode(1, new TreeNode(-2, new TreeNode(1, new TreeNode(-1), null) , new TreeNode(3)),
+                new TreeNode(-3, new TreeNode(-2), null));
+        System.out.println(maxPathSum(treeNode)); //3
+
     }
 }
