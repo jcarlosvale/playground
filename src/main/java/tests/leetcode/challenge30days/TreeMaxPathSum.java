@@ -27,6 +27,9 @@ package tests.leetcode.challenge30days;
  *
  * Output: 42
  */
+
+import com.sun.source.tree.Tree;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -57,31 +60,87 @@ public class TreeMaxPathSum {
     }
 
     public static int maxPathSum(TreeNode root) {
-        int sum = root.val;
-        int bothSides = root.val;
-        if (root.left != null) {
-            int leftSum = maxPathSum(root.left);
-            sum = Math.max(leftSum, root.val + leftSum);
-            bothSides += leftSum;
+        // pos 0 = max sum;
+        int [] maxSum = new int[1];
+        maxSum[0] = Integer.MIN_VALUE;
+        maxPathSum(root, maxSum);
+        return maxSum[0];
+    }
+
+    private static Integer maxPathSum(TreeNode root, int[] maxSum) {
+        if (null == root) return null;
+
+        int [] maxSumLeft  = new int[1];
+        maxSumLeft[0] = Integer.MIN_VALUE;
+        int [] maxSumRight = new int[1];
+        maxSumRight[0] = Integer.MIN_VALUE;
+
+        Integer leftValue = maxPathSum(root.left, maxSumLeft);
+        Integer rightValue = maxPathSum(root.right, maxSumRight);
+
+        if ((leftValue == null) && (rightValue == null)) {
+            maxSum[0] = root.val;
+            return root.val;
         }
-        if (root.right != null) {
-            int rightSum = maxPathSum(root.right);
-            sum = Math.max(sum, Math.max(rightSum, root.val + rightSum));
-            bothSides += rightSum;
+        if ((leftValue != null) && (rightValue != null)) {
+            int sumTot = root.val + leftValue + rightValue;
+            int sumLeft = root.val + leftValue;
+            int sumRight = root.val + rightValue;
+            int max = Math.max(Math.max(rightValue, leftValue),Math.max(Math.max(sumLeft, sumRight),Math.max(sumTot,root.val)));
+            maxSum[0] = Math.max(max, Math.max(maxSumLeft[0], maxSumRight[0]));
+            if ((max == root.val) || (max == sumTot) || (max == sumLeft) || (max == sumRight)) {
+                return max;
+            } else {
+                 //did not use the root
+                return 0;
+            }
         }
-        return Math.max(Math.max(root.val, bothSides), sum);
+        if (leftValue != null) {
+            int sumLeft = root.val + leftValue;
+            int max = Math.max(Math.max(leftValue,sumLeft),root.val);
+            maxSum[0] = Math.max(max, maxSumLeft[0]);
+            if ((max == root.val) || (max == sumLeft)) {
+                return max;
+            } else {
+                //did not use the root
+                return 0;
+            }
+        }
+        //righ child only
+        int sumRight = root.val + rightValue;
+        int max = Math.max(Math.max(rightValue,sumRight),root.val);
+        maxSum[0] = Math.max(max, maxSumRight[0]);
+        if ((max == root.val) || (max == sumRight)) {
+            return max;
+        } else {
+            //did not use the root
+            return 0;
+        }
     }
 
     public static void main(String[] args) {
         TreeMaxPathSum.TreeNode treeNode = new TreeNode(1, new TreeMaxPathSum.TreeNode(2), new TreeMaxPathSum.TreeNode(3));
-        System.out.println(maxPathSum(treeNode)); //6
+//        System.out.println(maxPathSum(treeNode)); //6
+//
+//        treeNode = new TreeNode(-3);
+//        System.out.println(maxPathSum(treeNode)); //-3
+//
+//        treeNode = new TreeNode(1, new TreeNode(-2, new TreeNode(1, new TreeNode(-1), null) , new TreeNode(3)),
+//                new TreeNode(-3, new TreeNode(-2), null));
+//        System.out.println(maxPathSum(treeNode)); //3
 
-        treeNode = new TreeNode(-3);
-        System.out.println(maxPathSum(treeNode)); //-3
-
-        treeNode = new TreeNode(1, new TreeNode(-2, new TreeNode(1, new TreeNode(-1), null) , new TreeNode(3)),
-                new TreeNode(-3, new TreeNode(-2), null));
-        System.out.println(maxPathSum(treeNode)); //3
+        treeNode = new TreeNode(5,
+                new TreeNode(4,
+                        new TreeNode(11,
+                                new TreeNode(7),
+                                new TreeNode(2)),
+                        null),
+                new TreeNode(8,
+                        new TreeNode(13),
+                        new TreeNode(4,
+                                new TreeNode(1),
+                                null)));
+        System.out.println(maxPathSum(treeNode)); //48
 
     }
 }
