@@ -88,34 +88,19 @@ public class TreeMaxPathSum {
             int sumRight = root.val + rightValue;
             int max = Math.max(Math.max(rightValue, leftValue),Math.max(Math.max(sumLeft, sumRight),Math.max(sumTot,root.val)));
             maxSum[0] = Math.max(max, Math.max(maxSumLeft[0], maxSumRight[0]));
-            if ((max == root.val) || (max == sumTot) || (max == sumLeft) || (max == sumRight)) {
-                return max;
-            } else {
-                 //did not use the root
-                return 0;
-            }
+            return Math.max(Math.max(sumLeft, sumRight),root.val);
         }
         if (leftValue != null) {
             int sumLeft = root.val + leftValue;
             int max = Math.max(Math.max(leftValue,sumLeft),root.val);
             maxSum[0] = Math.max(max, maxSumLeft[0]);
-            if ((max == root.val) || (max == sumLeft)) {
-                return max;
-            } else {
-                //did not use the root
-                return 0;
-            }
+            return Math.max(sumLeft, root.val);
         }
         //righ child only
         int sumRight = root.val + rightValue;
         int max = Math.max(Math.max(rightValue,sumRight),root.val);
         maxSum[0] = Math.max(max, maxSumRight[0]);
-        if ((max == root.val) || (max == sumRight)) {
-            return max;
-        } else {
-            //did not use the root
-            return 0;
-        }
+        return Math.max(sumRight, root.val);
     }
 
     public static void main(String[] args) {
