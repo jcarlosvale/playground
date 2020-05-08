@@ -54,32 +54,47 @@ package tests.hackerrank;
  */
 public class NewYearChaos {
     static void minimumBribes(int[] q) {
-        int originalPos = -1;
         int minimumBribes = 0;
-        int countChanges = 0;
+        //verify max movements
         for (int i = 0; i < q.length; i++) {
-            originalPos = q[i];
-            int diffPosition = i - (originalPos - 1);
-            if (diffPosition < -2) {
+            int countMovements = i - (q[i]-1);
+            if (countMovements < -2) {
                 minimumBribes = -1;
                 break;
-            } else {
-                if (diffPosition < 0) {
-                    minimumBribes += -(diffPosition);
-                    countChanges++; //maximum changes in the sequence positions
-                }
-                if (diffPosition > 0) {
-                    if (diffPosition > countChanges) {
-                        minimumBribes += diffPosition - countChanges;
-                    }
-                }
             }
         }
         if (minimumBribes < 0) {
             System.out.println("Too chaotic");
-        } else{
-            System.out.println(minimumBribes);
+            return;
         }
+        //changes
+        for (int i = 0; i < q.length; i++) {
+            int countMovements = countChanges(i, q);
+            minimumBribes += countMovements;
+        }
+        System.out.println(minimumBribes);
+    }
+
+    private static int countChanges(final int index, int[] q) {
+        int id = q[index]-1;
+        int cont = 0;
+        if (id == index) return cont;
+        //locate index
+        int pos = index;
+        while(true) {
+            if(index == q[pos]-1) break;
+            pos++;
+        }
+        int temp;
+        for (int i = pos; i > index ; i--) {
+            //swap
+            temp=q[i];
+            q[i] = q[i-1];
+            q[i-1] = temp;
+            //counter
+            cont++;
+        }
+        return cont;
     }
 
     public static void main(String[] args) {
