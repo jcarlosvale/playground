@@ -1,6 +1,7 @@
 package tests.hackerrank;
 
 /**
+ * https://www.youtube.com/watch?v=hDhf04AJIRs
  * Starting with a 1-indexed array of zeros and a list of operations, for each operation add a value to each of the
  * array element between two given indices, inclusive. Once all operations have been performed, return the maximum
  * value in your array.
@@ -58,18 +59,32 @@ package tests.hackerrank;
  */
 public class ArrayManipulation {
     static long arrayManipulation(int n, int[][] queries) {
-        long [] array = new long[n+1];
+        long [] array = new long[n+2];
         int a, b, k;
-        long max = 0l;
+        long max = Long.MIN_VALUE;
         for (int i = 0; i < queries.length; i++) {
             a = queries[i][0];
             b = queries[i][1];
             k = queries[i][2];
-            for (int j = a; j <= b; j++) {
-                array[j] += k;
-                if (array[j] > max) max = array[j];
-            }
+            array[a] = array[a] + k;
+            array[b+1] = array[b+1] - k;
+        }
+        //max
+        long sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            sum = sum + array[i];
+            max = Math.max(max, sum);
         }
         return max;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(arrayManipulation(4, new int[][]
+                        {
+                                {2,3,603},
+                                {1,1,286},
+                                {4,4,882}
+                        }
+                )); //882
     }
 }
