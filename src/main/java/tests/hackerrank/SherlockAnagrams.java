@@ -80,38 +80,35 @@ public class SherlockAnagrams {
     static int sherlockAndAnagrams(String s) {
         int counter = 0;
         //size of substring
-        for (int i = 1; i <= s.length() - 1; i++) {
-            counter += countAnagrams(s, i);
+        //size
+        for (int j = 1; j <= s.length(); j++) {
+            //index
+            for (int i = 0; i+j < s.length(); i++) {
+                counter += countAnagrams(s, i, j);
+            }
         }
         return counter;
     }
 
-    private static int countAnagrams(String s, int size) {
-        Map<String, Map<Character, Integer>> mapOfAnagrams = new HashMap<>();
+    private static int countAnagrams(String s, int i, int size) {
         Set<String> setOfAnagrams = new HashSet<>();
-        String substring = s.substring(0, size);
-        mapOfAnagrams.put(substring, countCharacters(substring));
+        String substring = s.substring(i, i+size);
+        Map<Character, Integer> mapOfChar = countCharacters(substring);
+        setOfAnagrams.add(substring);
+        int counter = 0;
         //comparing partial substrings - shift
-        for (int j = 1; j+size <= s.length(); j++) {
+        for (int j = i+1; j+size <= s.length(); j++) {
             String analyse = s.substring(j, j + size);
             if (!setOfAnagrams.contains(analyse)) {
-                if (containsAnagram(analyse, mapOfAnagrams)) {
+                if (isAnagram(mapOfChar,analyse)) {
                     setOfAnagrams.add(analyse);
-                } else {
-                    mapOfAnagrams.put(analyse, countCharacters(analyse));
+                    counter++;
                 }
+            } else {
+                counter++;
             }
         }
-        return setOfAnagrams.size();
-    }
-
-    private static boolean containsAnagram(String substring, Map<String, Map<Character, Integer>> mapOfAnagrams) {
-        for(String anagram : mapOfAnagrams.keySet()) {
-            if (isAnagram(anagram, mapOfAnagrams.get(anagram), substring)) {
-                return true;
-            }
-        }
-        return false;
+        return counter;
     }
 
     private static Map<Character, Integer> countCharacters(String string) {
@@ -123,9 +120,7 @@ public class SherlockAnagrams {
         return map;
     }
 
-    public static boolean isAnagram(String anagram, Map<Character, Integer> mapOfAnagram, String s2) {
-        if (anagram.length() != s2.length()) return false;
-        if (anagram.equals(s2)) return true;
+    public static boolean isAnagram(Map<Character, Integer> mapOfAnagram, String s2) {
         Map<Character, Integer> map = new HashMap<>();
         //map of char
         for (char c: s2.toCharArray()) {
@@ -133,7 +128,7 @@ public class SherlockAnagrams {
         }
         //verification
         for (char c: map.keySet()) {
-            if (mapOfAnagram.getOrDefault(c,-1) != map.get(c)) {
+            if (! mapOfAnagram.getOrDefault(c,-1).equals(map.get(c))) {
                 return false;
             }
         }
@@ -143,5 +138,7 @@ public class SherlockAnagrams {
     public static void main(String[] args) {
         System.out.println(sherlockAndAnagrams("abba")); //4
         System.out.println(sherlockAndAnagrams("abcd")); //0
+        System.out.println(sherlockAndAnagrams("kkkk")); //10
+
     }
 }
