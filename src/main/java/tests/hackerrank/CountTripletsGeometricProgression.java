@@ -68,9 +68,6 @@ import java.util.TreeMap;
  * The triplets satisfying are index , , , .
  */
 public class CountTripletsGeometricProgression {
-    public CountTripletsGeometricProgression() throws IOException {
-    }
-
     static long countTriplets(List<Long> arr, long r) {
         long count = 0;
         //count numbers
@@ -95,37 +92,44 @@ public class CountTripletsGeometricProgression {
             }
             //identify triplets
             for (Long num: indexes.keySet()) { //2_325_652_489
+                if (num * r * r > indexes.lastKey()) {
+                    break;
+                }
                 List<Integer> listFirst = indexes.get(num);
                 List<Integer> listSecond = indexes.get(num * r);
                 List<Integer> listThird = indexes.get(num * r * r);
                 if (listFirst != null && listSecond != null && listThird != null) {
-                    int indexI = 0;
-                    int indexJ = 0;
-                    int indexK = 0;
-                    while (indexI < listFirst.size()) {
-                        int foundIndexI = listFirst.get(indexI);
-                        int foundIndexJ = -1;
-                        int foundIndexK = -1;
-                        while ((foundIndexJ < 0) && (indexJ < listSecond.size())) {
-                            if (listSecond.get(indexJ) > foundIndexI) {
-                                foundIndexJ = indexJ;
-                            } else {
-                                indexJ++;
+                    //count quantities
+                    int i = 0;
+                    TreeMap<Integer, Integer> mapJ = new TreeMap<>();
+                    for (int pos = 0; pos < listSecond.size(); pos++) {
+                        Integer index = listSecond.get(pos);
+                        if (listFirst.get(0) > index) {
+                            mapJ.put(pos+1, 0);
+                        } else{
+                            while (i < listFirst.size() && listFirst.get(i) < index) {
+                                i++;
                             }
+                            mapJ.put(pos+1, i + mapJ.getOrDefault(pos,0));  //accumulate values
+                            i = i-1;
                         }
-                        if (foundIndexJ > -1) {
-                            while ((foundIndexK < 0) && (indexK < listThird.size())) {
-                                if (listThird.get(indexK) > listSecond.get(foundIndexJ)) {
-                                    foundIndexK = indexK;
-                                } else {
-                                    indexK++;
-                                }
+                    }
+                    int j = 0;
+                    TreeMap<Integer, Integer> mapK = new TreeMap<>();
+                    for (Integer index : listThird) {
+                        if (listSecond.get(0) > index) {
+                            mapK.put(index, 0);
+                        } else{
+                            while (j < listSecond.size() && listSecond.get(j) < index) {
+                                j++;
                             }
-                            if (foundIndexK > -1) {
-                                count += (listSecond.size() - foundIndexJ) * (listThird.size() - foundIndexK);
-                            }
+                            mapK.put(index, j);
+                            j = j-1;
                         }
-                        indexI++;
+                    }
+                    //triplets
+                    for(Integer value : mapK.values()) {
+                        count +=  mapJ.getOrDefault(value, 0);
                     }
                 }
             }
@@ -136,19 +140,19 @@ public class CountTripletsGeometricProgression {
     public static void main(String[] args) throws IOException {
         List<Long> nums = new ArrayList<>();
 
-//        nums.addAll(Arrays.asList(1L,2L,2L,4L));
-//        System.out.println(countTriplets(nums, 2)); //2
-//
-//        nums.clear();
-//        nums.addAll(Arrays.asList(1L, 3L, 9L, 9L, 27L, 81L));
-//        System.out.println(countTriplets(nums, 3)); //6
-//
-//
-//        nums.clear();
-//        for (int i = 0; i < 100; i++) {
-//            nums.add(1L);
-//        }
-//        System.out.println(countTriplets(nums, 1)); //100 1s 1 161700
+        nums.addAll(Arrays.asList(1L,2L,2L,4L));
+        System.out.println(countTriplets(nums, 2)); //2
+
+        nums.clear();
+        nums.addAll(Arrays.asList(1L, 3L, 9L, 9L, 27L, 81L));
+        System.out.println(countTriplets(nums, 3)); //6
+
+
+        nums.clear();
+        for (int i = 0; i < 100; i++) {
+            nums.add(1L);
+        }
+        System.out.println(countTriplets(nums, 1)); //100 1s 1 161700
 
         InputStream inputStream = FirstUnique.class.getClassLoader().getResourceAsStream("inputTriplets-1.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -163,16 +167,15 @@ public class CountTripletsGeometricProgression {
             nums.add(Long.parseLong(value));
         }
         if (nums.size() == size) {
-            long value = countTriplets(nums, r);  //13_621_903_916
+            long value = countTriplets(nums, r);
             System.out.println(value); //2325652489
-            System.out.println("difference " + (value - 2_325_652_489L));
         } else{
             System.out.println("error reading file");
         }
 
-//        nums.clear();
-//        nums.addAll(Arrays.asList(1L,1L,3L,3L,9L,9L, 27L, 27L));
-//        System.out.println(countTriplets(nums, 3));  //16
+        nums.clear();
+        nums.addAll(Arrays.asList(1L,1L,3L,3L,9L,9L, 27L, 27L));
+        System.out.println(countTriplets(nums, 3));  //16
 
     }
 }
