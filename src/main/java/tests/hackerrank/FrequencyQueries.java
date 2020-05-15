@@ -118,31 +118,34 @@ public class FrequencyQueries {
             int value = query.get(1);
             switch (op) {
                 case 1:  //add
-                    int frequency = countMap.getOrDefault(value, 0);
-                    if (frequency > 0) {
-                        frequencyMap.put(frequency, frequencyMap.get(frequency) -1);
-                        if (frequencyMap.get(frequency) <= 0) {
-                            frequencyMap.remove(frequency);
-                        }
+                    int oldFrequency = countMap.getOrDefault(value, 0);
+                    int newFrequency = oldFrequency + 1;
+                    countMap.put(value, newFrequency);
+                    frequencyMap.put(newFrequency, frequencyMap.getOrDefault(newFrequency, 0) + 1);
+                    if(frequencyMap.getOrDefault(oldFrequency, 1) == 1) {
+                        frequencyMap.remove(oldFrequency);
+                    } else {
+                        frequencyMap.put(oldFrequency, frequencyMap.get(oldFrequency) - 1);
                     }
-                    frequency++;
-                    countMap.put(value, countMap.getOrDefault(value, 0) + 1);
-                    frequencyMap.put(frequency, frequencyMap.getOrDefault(frequency, 0) + 1);
                     break;
                 case 2: //remove
-                    frequency = countMap.getOrDefault(value, 0);
-                    if (frequency == 1) {
+                    oldFrequency = countMap.getOrDefault(value, 0);
+                    newFrequency = oldFrequency - 1;
+                    if(newFrequency <= 0) {
                         countMap.remove(value);
-                        frequencyMap.put(frequency, frequencyMap.get(frequency) -1);
-                        if (frequencyMap.get(frequency) <= 0) {
-                            frequencyMap.remove(frequency);
+                        if (frequencyMap.getOrDefault(oldFrequency, 1) == 1) {
+                            frequencyMap.remove(oldFrequency);
+                        } else {
+                            frequencyMap.put(oldFrequency, frequencyMap.get(oldFrequency) - 1);
                         }
                     } else {
-                        if (frequency > 0) {
-                            frequency--;
-                            countMap.put(value, frequency);
-                            frequencyMap.put(frequency, frequencyMap.getOrDefault(frequency, 0) + 1);
+                        countMap.put(value, newFrequency);
+                        if (frequencyMap.getOrDefault(oldFrequency, 1) == 1) {
+                            frequencyMap.remove(oldFrequency);
+                        } else {
+                            frequencyMap.put(oldFrequency, frequencyMap.get(oldFrequency) - 1);
                         }
+                        frequencyMap.put(newFrequency, frequencyMap.getOrDefault(newFrequency, 0) + 1);
                     }
                     break;
                 case 3: //query
