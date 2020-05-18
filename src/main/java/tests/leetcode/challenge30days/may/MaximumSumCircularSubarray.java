@@ -45,24 +45,34 @@ package tests.leetcode.challenge30days.may;
  */
 public class MaximumSumCircularSubarray {
     public static int maxSubarraySumCircular(int[] A) {
-        int [] nums = new int[2*A.length - 1];
-        //copy
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = A[i % A.length];
-        }
-
-        int globalSum = nums[0];
-
+        int maxSum;
+        maxSum = kadane(A);
+        int totalSum = 0;
         for (int i = 0; i < A.length; i++) {
-            int maxSum = nums[i];
-            int tmpMax = nums[i];
-            for (int j = i+1; j < i+A.length; j++) {
-                tmpMax = Math.max(nums[j], tmpMax+nums[j]);
-                maxSum = Math.max(maxSum, tmpMax);
-            }
-            globalSum = Math.max(globalSum, maxSum);
+            totalSum += A[i];
+            A[i] = -A[i];
         }
-        return globalSum;
+
+        totalSum = totalSum + kadane(A);
+
+        if (totalSum == 0) totalSum = maxSum;
+
+        return Math.max(totalSum, maxSum);
+    }
+
+    private static int kadane(int[] array) {
+        int tmpMax = 0;
+        int maxSum = array[0];
+        for (int i = 0; i < array.length; i++) {
+            tmpMax = tmpMax+array[i];
+            if (maxSum <= tmpMax) {
+                maxSum = tmpMax;
+            }
+            if (tmpMax < 0) {
+                tmpMax = 0;
+            }
+        }
+        return maxSum;
     }
 
     public static void main(String[] args) {
@@ -71,5 +81,7 @@ public class MaximumSumCircularSubarray {
         System.out.println(maxSubarraySumCircular(new int[] {3,-1,2,-1})); //4
         System.out.println(maxSubarraySumCircular(new int[] {3,-2,2,-3})); //3
         System.out.println(maxSubarraySumCircular(new int[] {-2,-3,-1})); //-1
+        System.out.println(maxSubarraySumCircular(new int[] {-5, 3,5})); //8
+        System.out.println(maxSubarraySumCircular(new int[] {2,-2,2,7,8,0})); //19
     }
 }
