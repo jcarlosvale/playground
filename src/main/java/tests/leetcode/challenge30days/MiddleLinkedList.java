@@ -1,16 +1,12 @@
 package tests.leetcode.challenge30days;
 
+import tests.leetcode.challenge30days.dataStructure.ListNode;
+
 /**
  * Given a non-empty, singly linked list with head node head, return a middle node of linked list.
  *
  * If there are two middle nodes, return the second middle node.
  */
-
-class ListNode {
-     int val;
-     ListNode next;
-     ListNode(int x) { val = x; }
-}
 
 public class MiddleLinkedList {
     public ListNode middleNode(ListNode head) {
