@@ -1,6 +1,7 @@
 package tests.hackerrank.sort;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * HackerLand National Bank has a simple policy for warning clients about possible fraudulent account activity. If
@@ -78,7 +79,6 @@ import java.util.*;
 public class FraudulentActivityNotifications {
     public static int activityNotifications(int[] expenditure, int d) {
         int count = 0;
-        LinkedList<Integer> list = new LinkedList<>();
         //if d == 1
         if (d == 1) {
             for (int i = 1; i < expenditure.length; i++) {
@@ -98,27 +98,59 @@ public class FraudulentActivityNotifications {
             }
             return count;
         }
-        for (int i = 0; i < expenditure.length -1; i++) {
-            if( !list.isEmpty() && list.size() % d == 0) {
-                double median;
-                if (list.size() % 2 == 0) {
-                    median = (list.get(list.size() / 2) + list.get((list.size() / 2) - 1)) / 2.0;
-                } else {
-                    median = list.get(list.size() / 2);
-                }
-                if (2 * median >= expenditure[i]) {
-                    count++;
-                }
-                list.remove(Integer.valueOf(expenditure[i-1]));
+        List<Integer> list = Arrays.stream(expenditure).boxed().sorted().collect(Collectors.toList());
+        //sort
+        //map indexes
+        Map<Integer, Integer> mapIndexes = new HashMap<>();
+        Set<Integer> usedIndexes = new HashSet<>();
+        for (int i = 0; i < expenditure.length; i++) {
+            int indexList = binarySearchModifed(list, expenditure[i], 0, list.size()-1, usedIndexes);
+            mapIndexes.put(i, indexList);
+            usedIndexes.add(indexList);
+        }
+        //action
+        int medium = (d % 2 == 0) ? d/2 - 1 : d/2;
+        for (int i = d; i < expenditure.length; i++) {
+            int indexMedium = mapIndexes.get(medium);
+            double median;
+            if (d % 2 == 0) {
+                int indexMedium1 = mapIndexes.get(medium+1);
+                median = (list.get(indexMedium) + list.get(indexMedium1)) / 2.0;
+            } else {
+                median = list.get(indexMedium);
             }
-            int expectedIndex = Collections.binarySearch(list, expenditure[i]);
-            if(expectedIndex < 0) expectedIndex = -expectedIndex-1;
-            list.add(expectedIndex, expenditure[i]);
+            if (2 * median <= expenditure[i]) {
+                count++;
+            }
+            medium++;
         }
         return count;
     }
 
+    private static int binarySearchModifed(List<Integer> list, int value, int start, int end,
+                                           Set<Integer> usedIndexes) {
+        if (start > end) {
+            return -1;
+        }
+        int middle = start + (end-start) / 2;
+        int middleElement = list.get(middle);
+        if(middleElement == value) {
+            //repetead elements
+            int leftIndex = binarySearchModifed(list, value, start, middle-1, usedIndexes);
+            int rightIndex = binarySearchModifed(list, value, middle+1, end, usedIndexes);
+            if(leftIndex >= 0) return leftIndex;
+            if (usedIndexes.contains(middle)) {
+                return rightIndex;
+            } else {
+                return middle;
+            }
+        }
+        if (middleElement > value) return binarySearchModifed(list, value, start, middle-1, usedIndexes);
+        else return binarySearchModifed(list, value, middle+1, end, usedIndexes);
+    }
+
     public static void main(String[] args) {
         System.out.println(activityNotifications(new int[] {2, 3, 4, 2, 3, 6, 8, 4, 5}, 5));  //2
+        System.out.println(activityNotifications(new int[] {10, 20, 30, 40, 50}, 3));  //1
     }
 }
