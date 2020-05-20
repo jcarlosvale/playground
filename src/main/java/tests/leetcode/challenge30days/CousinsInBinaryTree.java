@@ -1,5 +1,7 @@
 package tests.leetcode.challenge30days;
 
+import tests.leetcode.challenge30days.dataStructure.TreeNode;
+
 import java.util.LinkedList;
 
 /**
