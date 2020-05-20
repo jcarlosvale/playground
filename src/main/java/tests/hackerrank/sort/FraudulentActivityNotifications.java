@@ -78,7 +78,6 @@ import java.util.*;
 public class FraudulentActivityNotifications {
     public static int activityNotifications(int[] expenditure, int d) {
         int count = 0;
-        LinkedList<Integer> list = new LinkedList<>();
         //if d == 1
         if (d == 1) {
             for (int i = 1; i < expenditure.length; i++) {
@@ -98,22 +97,24 @@ public class FraudulentActivityNotifications {
             }
             return count;
         }
-        for (int i = 0; i < expenditure.length -1; i++) {
-            if( !list.isEmpty() && list.size() % d == 0) {
-                double median;
-                if (list.size() % 2 == 0) {
-                    median = (list.get(list.size() / 2) + list.get((list.size() / 2) - 1)) / 2.0;
-                } else {
-                    median = list.get(list.size() / 2);
-                }
-                if (2 * median >= expenditure[i]) {
-                    count++;
-                }
-                list.remove(Integer.valueOf(expenditure[i-1]));
+        LinkedList<Integer> list = new LinkedList<>();
+        for (int i = 0; i < d; i++) {
+            list.add(expenditure[i]);
+        }
+        Collections.sort(list);
+
+        for (int i = d; i < expenditure.length -1; i++) {
+            double median;
+            if (list.size() % 2 == 0) {
+                median = (list.get(list.size() / 2) + list.get((list.size() / 2) - 1)) / 2.0;
+            } else {
+                median = list.get(list.size() / 2);
             }
-            int expectedIndex = Collections.binarySearch(list, expenditure[i]);
-            if(expectedIndex < 0) expectedIndex = -expectedIndex-1;
-            list.add(expectedIndex, expenditure[i]);
+            if (2 * median <= expenditure[i]) {
+                count++;
+            }
+            list.remove(Integer.valueOf(expenditure[i-d]));
+            list.add(expenditure[i]);
         }
         return count;
     }
