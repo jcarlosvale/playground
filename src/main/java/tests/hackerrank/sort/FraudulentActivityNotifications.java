@@ -1,6 +1,7 @@
 package tests.hackerrank.sort;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * HackerLand National Bank has a simple policy for warning clients about possible fraudulent account activity. If
@@ -97,29 +98,59 @@ public class FraudulentActivityNotifications {
             }
             return count;
         }
-        LinkedList<Integer> list = new LinkedList<>();
+        //count numbers - size d
+        TreeMap<Integer, Integer> mapIndexes = new TreeMap<>();
         for (int i = 0; i < d; i++) {
-            list.add(expenditure[i]);
+            mapIndexes.put(expenditure[i], mapIndexes.getOrDefault(expenditure[i],0) + 1);
         }
-        Collections.sort(list);
-
-        for (int i = d; i < expenditure.length -1; i++) {
-            double median;
-            if (list.size() % 2 == 0) {
-                median = (list.get(list.size() / 2) + list.get((list.size() / 2) - 1)) / 2.0;
-            } else {
-                median = list.get(list.size() / 2);
-            }
+        //action
+        for (int i = d; i < expenditure.length; i++) {
+            double median = findMedian(mapIndexes, d);
             if (2 * median <= expenditure[i]) {
                 count++;
             }
-            list.remove(Integer.valueOf(expenditure[i-d]));
-            list.add(expenditure[i]);
+            //add remove indexes
+            int counter = mapIndexes.get(expenditure[i-d]);
+            counter--;
+            if (counter <= 0) mapIndexes.remove(expenditure[i-d]);
+            else mapIndexes.put(expenditure[i-d], counter);
+
+            mapIndexes.put(expenditure[i], mapIndexes.getOrDefault(expenditure[i], 0) + 1);
         }
         return count;
     }
 
+    private static double findMedian(TreeMap<Integer, Integer> mapIndexes, int size) {
+        int counter1;
+        int counter2;
+        boolean find1 = false;
+        boolean find2 = false;
+        if (size % 2 != 0) {
+            counter1 = size/2 + 1;
+            counter2 = counter1;
+        } else {
+            counter1 = size/2;
+            counter2 = counter1 + 1;
+        }
+        int median = 0;
+        for(Map.Entry<Integer,Integer> entry : mapIndexes.entrySet()) {
+            counter1 -= entry.getValue();
+            counter2 -= entry.getValue();
+            if (!find1 && counter1 <= 0) {
+                median += entry.getKey();
+                find1 = true;
+            }
+            if (!find2 && counter2 <= 0) {
+                median += entry.getKey();
+                find2 = true;
+            }
+            if (find1 && find2) break;
+        }
+        return median/2.0;
+    }
+
     public static void main(String[] args) {
         System.out.println(activityNotifications(new int[] {2, 3, 4, 2, 3, 6, 8, 4, 5}, 5));  //2
+        System.out.println(activityNotifications(new int[] {10, 20, 30, 40, 50}, 3));  //1
     }
 }
