@@ -98,55 +98,55 @@ public class FraudulentActivityNotifications {
             }
             return count;
         }
-        List<Integer> list = Arrays.stream(expenditure).boxed().sorted().collect(Collectors.toList());
-        //sort
-        //map indexes
-        Map<Integer, Integer> mapIndexes = new HashMap<>();
-        Set<Integer> usedIndexes = new HashSet<>();
-        for (int i = 0; i < expenditure.length; i++) {
-            int indexList = binarySearchModifed(list, expenditure[i], 0, list.size()-1, usedIndexes);
-            mapIndexes.put(i, indexList);
-            usedIndexes.add(indexList);
+        //count numbers - size d
+        TreeMap<Integer, Integer> mapIndexes = new TreeMap<>();
+        for (int i = 0; i < d; i++) {
+            mapIndexes.put(expenditure[i], mapIndexes.getOrDefault(expenditure[i],0) + 1);
         }
         //action
-        int medium = (d % 2 == 0) ? d/2 - 1 : d/2;
         for (int i = d; i < expenditure.length; i++) {
-            int indexMedium = mapIndexes.get(medium);
-            double median;
-            if (d % 2 == 0) {
-                int indexMedium1 = mapIndexes.get(medium+1);
-                median = (list.get(indexMedium) + list.get(indexMedium1)) / 2.0;
-            } else {
-                median = list.get(indexMedium);
-            }
+            double median = findMedian(mapIndexes, d);
             if (2 * median <= expenditure[i]) {
                 count++;
             }
-            medium++;
+            //add remove indexes
+            int counter = mapIndexes.get(expenditure[i-d]);
+            counter--;
+            if (counter <= 0) mapIndexes.remove(expenditure[i-d]);
+            else mapIndexes.put(expenditure[i-d], counter);
+
+            mapIndexes.put(expenditure[i], mapIndexes.getOrDefault(expenditure[i], 0) + 1);
         }
         return count;
     }
 
-    private static int binarySearchModifed(List<Integer> list, int value, int start, int end,
-                                           Set<Integer> usedIndexes) {
-        if (start > end) {
-            return -1;
+    private static double findMedian(TreeMap<Integer, Integer> mapIndexes, int size) {
+        int counter1;
+        int counter2;
+        boolean find1 = false;
+        boolean find2 = false;
+        if (size % 2 != 0) {
+            counter1 = size/2 + 1;
+            counter2 = counter1;
+        } else {
+            counter1 = size/2;
+            counter2 = counter1 + 1;
         }
-        int middle = start + (end-start) / 2;
-        int middleElement = list.get(middle);
-        if(middleElement == value) {
-            //repetead elements
-            int leftIndex = binarySearchModifed(list, value, start, middle-1, usedIndexes);
-            int rightIndex = binarySearchModifed(list, value, middle+1, end, usedIndexes);
-            if(leftIndex >= 0) return leftIndex;
-            if (usedIndexes.contains(middle)) {
-                return rightIndex;
-            } else {
-                return middle;
+        int median = 0;
+        for(Map.Entry<Integer,Integer> entry : mapIndexes.entrySet()) {
+            counter1 -= entry.getValue();
+            counter2 -= entry.getValue();
+            if (!find1 && counter1 <= 0) {
+                median += entry.getKey();
+                find1 = true;
             }
+            if (!find2 && counter2 <= 0) {
+                median += entry.getKey();
+                find2 = true;
+            }
+            if (find1 && find2) break;
         }
-        if (middleElement > value) return binarySearchModifed(list, value, start, middle-1, usedIndexes);
-        else return binarySearchModifed(list, value, middle+1, end, usedIndexes);
+        return median/2.0;
     }
 
     public static void main(String[] args) {
