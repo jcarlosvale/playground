@@ -2,8 +2,12 @@ package tests;
 
 import tests.leetcode.challenge30days.FirstUnique;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class Util {
@@ -20,5 +24,17 @@ public class Util {
             e.printStackTrace();
         }
         return lines;
+    }
+
+    enum Color {
+        GREEN, RED, BLUE;
+    }
+    public static void main(String[] args) {
+        System.out.println("test");
+        EnumSet<Color> carrierSet = EnumSet.noneOf(Color.class);
+        carrierSet.add(Color.GREEN);
+        carrierSet.add(Color.RED);
+        carrierSet.add(Color.GREEN);
+        System.out.println(carrierSet.size());
     }
 }

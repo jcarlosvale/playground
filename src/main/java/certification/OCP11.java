@@ -18,8 +18,19 @@ public class OCP11 extends SomeClass{
 //        short j = 2;
 //        short w = 2 + 1;
 //        System.out.println(w);
-        OCP11 ocp11 = new OCP11();
-        ocp11.methodException(false);
+//        OCP11 ocp11 = new OCP11();
+//        ocp11.methodException(false);
+
+        String one = "rat1";
+        String two = "rat" + 1;
+        System.out.println(one == two);
+
+        String three = "rat" + "1";
+        System.out.println(one == three);
+
+        String four = "r" + "a" + "t" + "1";
+        System.out.println(two == four);
+        System.out.println(one == four);
     }
 
     public void someMethdd() {
