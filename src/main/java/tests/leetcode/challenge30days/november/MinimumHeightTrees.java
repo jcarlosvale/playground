@@ -64,28 +64,43 @@ public class MinimumHeightTrees {
                 matrix[i][j] = 1;
                 matrix[j][i] = 1;
             }
-            //verify connectivity
-            verifyConnectivity(matrix, listMHT);
-            int cont = 1;
-            while(listMHT.isEmpty()) {
-                for (int [] edge : edges) {
-                    connectStep(matrix, edge[0], edge[1], cont);
+            for (int [] edge : edges) {
+                connectStep(matrix, edge[0], edge[1]);
+            }
+            //normalize diagonals
+            for (int i = 0; i < n; i++) {
+                matrix[i][i] -= 1;
+            }
+            //find min
+            int min = n;
+            for (int i = 0; i < n; i++) {
+                int maxLine = -1;
+                for (int j = 0; j < n; j++) {
+                    maxLine = Math.max(maxLine, matrix[i][j]);
                 }
-                cont++;
-                verifyConnectivity(matrix, listMHT);
+                if (maxLine < min) {
+                    listMHT.clear();
+                    listMHT.add(i);
+                    min = maxLine;
+                } else {
+                    if (maxLine == min) {
+                        listMHT.add(i);
+                    }
+                }
             }
         }
         return listMHT;
     }
 
-    private static void connectStep(int[][] matrix, int vertexA, int vertexB, int step) {
+    private static void connectStep(int[][] matrix, int vertexA, int vertexB) {
         for (int i = 0; i < matrix.length; i++) {
-            if ((i == vertexA) || (i==vertexB)) continue;
-            if (matrix[vertexA][i] == step && matrix[vertexB][i] == 0) {
-                matrix[vertexB][i] = step+1;
+            if (matrix[vertexB][i] == 0 && matrix[vertexA][i] > 0) {
+                matrix[vertexB][i] = matrix[vertexA][i]+1;
+                matrix[i][vertexB] = matrix[vertexB][i];
             }
-            if (matrix[vertexB][i] == step && matrix[vertexA][i] == 0) {
-                matrix[vertexA][i] = step+1;
+            if (matrix[vertexA][i] == 0 && matrix[vertexB][i] > 0) {
+                matrix[vertexA][i] = matrix[vertexB][i] + 1;
+                matrix[i][vertexA] = matrix[vertexA][i];
             }
         }
     }
@@ -105,6 +120,7 @@ public class MinimumHeightTrees {
     }
 
     public static void main(String[] args) {
-        System.out.println(findMinHeightTrees(6, new int [][]{{3,0},{3,1},{3,2},{3,4},{5,4}}));
+        //System.out.println(findMinHeightTrees(6, new int [][]{{3,0},{3,1},{3,2},{3,4},{5,4}}));
+        System.out.println(findMinHeightTrees(15, new int [][]{{0,1},{0,2},{2,3},{2,4},{2,5},{4,6},{0,7},{4,8},{5,9},{7,10},{6,11},{0,12},{0,13},{3,14}})); //2
     }
 }
