@@ -49,27 +49,26 @@ string S consists only of upper-case English letters A, C, G, T.
 public class GenomicRangeQuery {
     public static int[] solution(String S, int[] P, int[] Q) {
         int [] queryAnswer = new int[P.length];
+        int [][] solutions = new int[S.length()][S.length()];
         Map<Character, Integer> map = new HashMap<>();
         map.put('A',1);
         map.put('C',2);
         map.put('G',3);
         map.put('T',4);
+        //solutions
+        for (int j = 0; j < S.length(); j++) {
+            solutions[j][j] = map.get(S.charAt(j));
+            for (int i = j-1; i >= 0; i--) {
+                solutions[i][j] = Math.min(solutions[i][j-1], solutions[i+1][j]);
+            }
+        }
+        //queries
         for (int i = 0; i < P.length; i++) {
             int firstIndex = P[i];
             int lastIndex = Q[i];
-            queryAnswer[i] = query(S, firstIndex, lastIndex, map);
+            queryAnswer[i] = solutions[firstIndex][lastIndex];
         }
         return queryAnswer;
-    }
-
-    private static int query(String s, int firstIndex, int lastIndex, Map<Character, Integer> map) {
-        if (firstIndex == lastIndex) {
-            return map.get(s.charAt(firstIndex));
-        }
-        if ((map.get(s.charAt(firstIndex)) == 1) || (map.get(s.charAt(lastIndex)) == 1)){
-            return 1;
-        }
-        return Math.min(query(s, firstIndex, lastIndex-1, map), map.get(s.charAt(lastIndex)));
     }
 
     public static void main(String[] args) {
