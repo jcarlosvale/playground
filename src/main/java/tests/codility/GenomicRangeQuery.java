@@ -1,7 +1,15 @@
 package tests.codility;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /*
-A DNA sequence can be represented as a string consisting of the letters A, C, G and T, which correspond to the types of successive nucleotides in the sequence. Each nucleotide has an impact factor, which is an integer. Nucleotides of types A, C, G and T have impact factors of 1, 2, 3 and 4, respectively. You are going to answer several queries of the form: What is the minimal impact factor of nucleotides contained in a particular part of the given DNA sequence?
+A DNA sequence can be represented as a string consisting of the letters A, C, G and T, which correspond to the types of
+successive nucleotides in the sequence. Each nucleotide has an impact factor, which is an integer.
+Nucleotides of types A, C, G and T have impact factors of 1, 2, 3 and 4, respectively.
+You are going to answer several queries of the form: What is the minimal impact factor of nucleotides contained in a
+particular part of the given DNA sequence?
 
 The DNA sequence is given as a non-empty string S = S[0]S[1]...S[N-1] consisting of N characters. There are M queries, which are given in non-empty arrays P and Q, each consisting of M integers. The K-th query (0 ≤ K < M) requires you to find the minimal impact factor of nucleotides contained in the DNA sequence between positions P[K] and Q[K] (inclusive).
 
@@ -39,8 +47,33 @@ P[K] ≤ Q[K], where 0 ≤ K < M;
 string S consists only of upper-case English letters A, C, G, T.
  */
 public class GenomicRangeQuery {
+    public static int[] solution(String S, int[] P, int[] Q) {
+        int [] queryAnswer = new int[P.length];
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('A',1);
+        map.put('C',2);
+        map.put('G',3);
+        map.put('T',4);
+        for (int i = 0; i < P.length; i++) {
+            int firstIndex = P[i];
+            int lastIndex = Q[i];
+            queryAnswer[i] = query(S, firstIndex, lastIndex, map);
+        }
+        return queryAnswer;
+    }
 
-    public int[] solution(String S, int[] P, int[] Q) {
+    private static int query(String s, int firstIndex, int lastIndex, Map<Character, Integer> map) {
+        if (firstIndex == lastIndex) {
+            return map.get(s.charAt(firstIndex));
+        }
+        if ((map.get(s.charAt(firstIndex)) == 1) || (map.get(s.charAt(lastIndex)) == 1)){
+            return 1;
+        }
+        return Math.min(query(s, firstIndex, lastIndex-1, map), map.get(s.charAt(lastIndex)));
+    }
 
+    public static void main(String[] args) {
+        //2,4,1
+        System.out.println(Arrays.toString(solution("CAGCCTA", new int[]{2,5,0}, new int[]{4,5,6})));
     }
 }
