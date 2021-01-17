@@ -40,4 +40,7 @@ string S consists only of upper-case English letters A, C, G, T.
  */
 public class GenomicRangeQuery {
 
+    public int[] solution(String S, int[] P, int[] Q) {
+
+    }
 }
