@@ -7,5 +7,12 @@ public class SomeClassWithEnum {
 
     public static void main(String[] args) {
         SomeEnum VALUE1 = null;
+        String b = new String("HELLO");
+        method(b);
+        System.out.println(b);
+    }
+
+    private static void method(String b) {
+        b += " WORLD";
     }
 }
