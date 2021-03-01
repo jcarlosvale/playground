@@ -10,6 +10,7 @@ public class StaticTest {
 }
 
 class ExternalClass {
+    public static final void someStaticMethod() {}
     public static void main(String[] args) {
         StaticTest.SomeStaticClass someStaticClass = new StaticTest.SomeStaticClass();
         someStaticClass.hello();
