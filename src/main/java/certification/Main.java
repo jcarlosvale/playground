@@ -1,5 +1,8 @@
 package certification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
 
@@ -25,9 +28,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String [][] input = new String[][] {{"A", "B", "C"},{"D", "E", "F","K"},{"G", "H", "I","J"}};
-        findSquares(input);
-        //System.out.println(findSquares(input));
-
+        SomeClassWithEnum.SomeEnum x = SomeClassWithEnum.SomeEnum.VALUE1;
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(0,0);
+        list.add(2,0);
+        System.out.println(list);
     }
 }
