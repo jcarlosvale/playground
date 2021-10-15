@@ -1,25 +1,33 @@
 package certification;
 
-import java.util.function.Supplier;
-
-class Employee{     int age;    }
-
 public class Main {
+
+
+
+    public static void findSquares(String[][] positions) {
+        for (int i = 0; i < positions.length; i++) {
+            for (int j = 0; j < positions[i].length; j++) {
+                for (int k = 1; k < positions.length; k++) {
+                    evaluate(positions,i,j,k);
+                }
+            }
+        }
+
+    }
+
+    //is it quadratic?
+    private static void evaluate(String[][] positions, int i, int j, int size) {
+        int maxRight = positions[0].length;
+        int maxBelow = positions.length;
+        if ((j+size < maxRight) && (i+size < maxBelow)) {
+            System.out.println(positions[i][j]+positions[i][j+size]+positions[i+size][j]+positions[i+size][j+size]);
+        }
+    }
+
     public static void main(String[] args) {
-
-        System.out.println(args.length);
-        var hasParams = (args == null ? false : true);
-        System.out.println(hasParams);
-
-        Employee e = new Employee();
-        Supplier<Employee> se = ()->{ e.age = 40; return e; }; //1
-        e.age = 50;//2
-        System.out.println(se.get().age); //3
-
-        String s = "       ";
-        System.out.println(s.isEmpty());
-        System.out.println(s.isBlank());
-        System.out.println(s.strip() != "");
+        String [][] input = new String[][] {{"A", "B", "C"},{"D", "E", "F","K"},{"G", "H", "I","J"}};
+        findSquares(input);
+        //System.out.println(findSquares(input));
 
     }
 }
