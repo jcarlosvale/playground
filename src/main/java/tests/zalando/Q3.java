@@ -17,12 +17,15 @@ public class Q3 {
         }
         listOfElements.sort(Integer::compareTo);
 
-        int minimum1 = listOfElements.get(0);
+        int minimum1 = -1;
         int minimum2 = -1;
-        for (int i = 1; i < listOfElements.size(); i++) {
-            if(isNotAdjacent(mapIndexes.get(minimum1), mapIndexes.get(listOfElements.get(i)))){
-                minimum2 = listOfElements.get(i);
-                break;
+        for (int i = 0; i < listOfElements.size(); i++) {
+            minimum1 = listOfElements.get(i);
+            for (int j = 1; j < listOfElements.size(); j++) {
+                if(isNotAdjacent(mapIndexes.get(minimum1), mapIndexes.get(listOfElements.get(j)))){
+                    minimum2 = listOfElements.get(j);
+                    return minimum1 + minimum2;
+                }
             }
         }
         return minimum1 + minimum2;
@@ -42,5 +45,7 @@ public class Q3 {
     public static void main(String[] args) {
         System.out.println(solution(new int[]{5,2,4,6,3,7})); //5
         System.out.println(solution(new int[]{5,4,3,2,1})); //6
+        System.out.println(solution(new int[]{1,2,2,2,1})); //4
+        System.out.println(solution(new int[]{1,2,1,3,1})); //5
     }
 }
