@@ -7,7 +7,7 @@ class SomeClass {
     void print (List<Object> o) {}
 }
 
-public class OCP11 extends SomeClass{
+public class OCP11 extends AnyClass {
 
 
     void print (ArrayList<Object> l) {}

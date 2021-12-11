@@ -1,23 +1,32 @@
 package certification;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 class Test {
+
+    public static long taskOfPairing(List<Long> freq) {
+        List<Long> zeros = new ArrayList<>();
+
+        long acc = 0;
+        //division by 2
+        for(Long elem : freq) {
+            acc += elem / 2;
+            zeros.add(elem % 2);
+        }
+        //get neighbors
+        for(int i = 0; i< zeros.size()-1; i++) {
+            long sum = (zeros.get(i) + zeros.get(i+1)) / 2;
+            if (sum == 1) {
+                acc++;
+                zeros.set(i+1,0L);
+            }
+        }
+        return acc;
+    }
+
      public static void main(String[] args) {
-//         String[] s_arr = new String[1];
-//         String s = "ABC";
-//         s_arr[0] = s;
-//         concatenate(s_arr, s);
-//         System.out.println(s + s_arr[0]);
-         List<String> vals = Arrays.asList("a", "b");
-         String join = vals.parallelStream().reduce("_", (a, b)->a.concat(b));
-         System.out.println(join);         System.out.println("FIME");
-     }
-     static void concatenate(String[] s_arr, String s) {
-         s = s + s_arr[0];
-         s_arr[0] = s;
-         s_arr = new String[1];
-         s_arr[0] = "";
+         System.out.println(taskOfPairing(List.of(0L, 8844194L, 2953613L)));
      }
 }
