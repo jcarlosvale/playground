@@ -1,45 +1,87 @@
 package tests.zalando;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class Q3 {
     public static int solution(int[] A) {
-        List<Integer> listOfElements = new ArrayList<>();
-        Map<Integer, List<Integer>> mapIndexes = new HashMap<>();
-        for (int i = 1; i < A.length - 1; i++) {
-            listOfElements.add(A[i]);
-            List<Integer> indexes = mapIndexes.getOrDefault(A[i], new ArrayList<>());
-            indexes.add(i);
-            mapIndexes.put(A[i], indexes);
-        }
-        listOfElements.sort(Integer::compareTo);
+        int min1, min2 , min3;
+        int index1, index2, index3;
+        int a = 1, b = 2, c = 3;
 
-        int minimum1 = -1;
-        int minimum2 = -1;
-        for (int i = 0; i < listOfElements.size(); i++) {
-            minimum1 = listOfElements.get(i);
-            for (int j = 1; j < listOfElements.size(); j++) {
-                if(isNotAdjacent(mapIndexes.get(minimum1), mapIndexes.get(listOfElements.get(j)))){
-                    minimum2 = listOfElements.get(j);
-                    return minimum1 + minimum2;
+        //6 possibilities
+        if (satisfy(A, a, b, c)) {
+            min1 = A[a]; min2 = A[b]; min3 = A[c];
+            index1 = a; index2 = b; index3 = c;
+        } else {
+            a = 1; b = 3; c = 2;
+            if (satisfy(A, a, b, c)) {
+                min1 = A[a]; min2 = A[b]; min3 = A[c];
+                index1 = a; index2 = b; index3 = c;
+            } else {
+                a = 2; b = 1; c = 3;
+                if (satisfy(A, a, b, c)) {
+                    min1 = A[a]; min2 = A[b]; min3 = A[c];
+                    index1 = a; index2 = b; index3 = c;
+                } else {
+                    a = 2; b = 3; c = 1;
+                    if (satisfy(A, a, b, c)) {
+                        min1 = A[a]; min2 = A[b]; min3 = A[c];
+                        index1 = a; index2 = b; index3 = c;
+                    } else {
+                        a = 3; b = 1; c = 2;
+                        if (satisfy(A, a, b, c)) {
+                            min1 = A[a]; min2 = A[b]; min3 = A[c];
+                            index1 = a; index2 = b; index3 = c;
+                        } else {
+                            a = 3; b = 2; c = 1;
+                            min1 = A[a]; min2 = A[b]; min3 = A[c];
+                            index1 = a; index2 = b; index3 = c;
+                        }
+                    }
                 }
             }
         }
-        return minimum1 + minimum2;
+        //verify last position
+        for(int i = 4; i < A.length -1; i++) {
+            int element = A[i];
+
+            if(element <= min1) {
+                min3 = min2;
+                index3 = index2;
+
+                min2 = min1;
+                index2 = index1;
+
+                min1 = element;
+                index1 = i;
+            } else {
+                if(element <= min2) {
+                    min3 = min2;
+                    index3 = index2;
+
+                    min2 = element;
+                    index2 = i;
+                } else {
+                    if(element < min3) {
+                        min3 = element;
+                        index3 = i;
+                    }
+                }
+            }
+        }
+
+        //retrieve not adjacent
+        if (Math.abs(index1-index2)> 1) {
+            return min1 + min2;
+        } else {
+            if (Math.abs(index1-index3)> 1) {
+                return min1 + min3;
+            } else {
+                return min2 + min3;
+            }
+        }
     }
 
-    private static boolean isNotAdjacent(List<Integer> indexes1, List<Integer> indexes2) {
-        for (int index1: indexes1) {
-            for(int index2: indexes2) {
-                if(Math.abs(index1 - index2) > 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    private static boolean satisfy(int[] A, int a, int b, int c) {
+        return A[a] <= A[b] && A[b] <= A[c];
     }
 
     public static void main(String[] args) {
