@@ -1,8 +1,10 @@
 package tests.entwicklerheld.deutschebahnChallenge.models;
 
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Builder
+@NoArgsConstructor
 public class Board {
 	public String name;
 	public String type;
