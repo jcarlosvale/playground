@@ -23,33 +23,38 @@ public class RailwayPlatformService {
 
 		List<TrainStop> trainStopList = new ArrayList<>();
 		Map<String, List<Board>> arrivalsMap = generateMapOfBoards(arrivals);
-		for(Board departure: departures) {
-			String trainName = departure.name;
-			if (arrivalsMap.containsKey(trainName)) {
-				List<Board> arrivalsCandidateList = arrivalsMap.get(trainName);
-				arrivalsCandidateList.sort(Comparator.comparing(o -> o.dateTime));
-				Board arrival = binarySearch(arrivalsCandidateList, departure, 0, arrivalsCandidateList.size() - 1);
-				if (arrival != null) {
+		Map<String, List<Board>> departuresMap = generateMapOfBoards(departures);
+		for(Board arrival: arrivals) {
+			String trainName = arrival.name;
+			if (departuresMap.containsKey(trainName)) {
+				List<Board> departuresCandidateList = departuresMap.get(trainName);
+				departuresCandidateList.sort(Comparator.comparing(o -> o.dateTime));
+				Board departure = binarySearch(departuresCandidateList, arrival, 0, departuresCandidateList.size() - 1);
+				if (departure != null) {
 					TrainStop trainStop = new TrainStop(trainName, parse(arrival.dateTime, ISO_DATE_TIME), parse(departure.dateTime, ISO_DATE_TIME));
 					trainStopList.add(trainStop);
 				}
+			} else {
+				LocalDateTime arrivalDateTime = parse(arrival.dateTime, ISO_DATE_TIME);
+				TrainStop trainStop = new TrainStop(trainName, arrivalDateTime, arrivalDateTime.plusMinutes(BLOCK_PERIOD_IN_MINUTES));
+				trainStopList.add(trainStop);
 			}
 		}
 		return trainStopList;
 
 	}
 
-	private Board binarySearch(List<Board> arrivalsCandidateList, Board departure, int start, int end) {
+	private Board binarySearch(List<Board> departuresCandidateList, Board arrival, int start, int end) {
 		if (start > end) return null;
 		int middle = (start + end) / 2;
-		long dateTimeDiffInMinutes = dateTimeDiff(departure.dateTime, arrivalsCandidateList.get(middle).dateTime);
+		long dateTimeDiffInMinutes = dateTimeDiff(departuresCandidateList.get(middle).dateTime, arrival.dateTime);
 		if (dateTimeDiffInMinutes >=0 && dateTimeDiffInMinutes <= MAX_INTERVAL_IN_MINUTES) {
-			return arrivalsCandidateList.get(middle);
+			return departuresCandidateList.get(middle);
 		}
 		if (dateTimeDiffInMinutes > MAX_INTERVAL_IN_MINUTES) {
-			return binarySearch(arrivalsCandidateList, departure, middle+1, end);
+			return binarySearch(departuresCandidateList, arrival, middle+1, end);
 		} else {
-			return binarySearch(arrivalsCandidateList, departure, start, middle-1);
+			return binarySearch(departuresCandidateList, arrival, start, middle-1);
 		}
 	}
 
