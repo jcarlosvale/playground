@@ -4,13 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import tests.entwicklerheld.deutschebahnChallenge.models.Board;
 import tests.entwicklerheld.deutschebahnChallenge.models.TrainStop;
 
@@ -118,4 +115,37 @@ public class RailwayPlatformServiceTest {
         //THEN
         assertEquals(6852, actual.size());
     }
+
+    @Test
+    public void dresdenTest() throws IOException {
+        //GIVEN
+        ObjectMapper mapper = new ObjectMapper();
+        List<Board> arrivals =
+                Arrays.asList(mapper.readValue(new ClassPathResource("dresden_arrivals.json", getClass().getClassLoader()).getInputStream(), Board[].class));
+        List<Board> departures =
+                Arrays.asList(mapper.readValue(new ClassPathResource("dresden_departures.json", getClass().getClassLoader()).getInputStream(), Board[].class));
+
+        //WHEN
+        List<TrainStop> actual = railwayPlatformService.convertBoardsToTrainStops(arrivals, departures);
+
+        //THEN
+        assertEquals(11662, actual.size());
+    }
+
+    @Test
+    public void berlinTest() throws IOException {
+        //GIVEN
+        ObjectMapper mapper = new ObjectMapper();
+        List<Board> arrivals =
+                Arrays.asList(mapper.readValue(new ClassPathResource("berlin_arrivals.json", getClass().getClassLoader()).getInputStream(), Board[].class));
+        List<Board> departures =
+                Arrays.asList(mapper.readValue(new ClassPathResource("berlin_departures.json", getClass().getClassLoader()).getInputStream(), Board[].class));
+
+        //WHEN
+        List<TrainStop> actual = railwayPlatformService.convertBoardsToTrainStops(arrivals, departures);
+
+        //THEN
+        assertEquals(13523, actual.size());
+    }
+
 }
