@@ -9,10 +9,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import tests.entwicklerheld.deutschebahnChallenge.models.Board;
 import tests.entwicklerheld.deutschebahnChallenge.models.TrainStop;
@@ -123,6 +121,44 @@ public class RailwayPlatformService {
 
 
 	public int calculateMinimumNumberOfPlatforms(List<TrainStop> trainStops) {
-		return 0;
+
+		if(trainStops.isEmpty()) return 0;
+
+		trainStops.sort(Comparator.comparing(o -> o.arrival));
+		int maxCount = Integer.MIN_VALUE;
+		LocalDateTime minArrival = trainStops.get(0).arrival;
+		LocalDateTime maxDeparture = trainStops.get(0).departure;
+		int i = 0;
+
+		while(i < trainStops.size()) {
+			int count = 0;
+
+			if (intersect(trainStops.get(i), minArrival, maxDeparture)) {
+				while(i < trainStops.size() && intersect(trainStops.get(i), minArrival, maxDeparture)) {
+					count++;
+					minArrival = trainStops.get(i).arrival.isBefore(minArrival) ? trainStops.get(i).arrival : minArrival;
+					maxDeparture = trainStops.get(i).departure.isAfter(maxDeparture) ? trainStops.get(i).departure : maxDeparture;
+					i++;
+				}
+				if(count == 6) {
+					System.out.println("DEBUG");
+				}
+				maxCount = Math.max(maxCount, count);
+				if(i >= trainStops.size()) break;
+				minArrival = trainStops.get(i).arrival;
+				maxDeparture = trainStops.get(i).departure;
+			} else {
+				i++;
+			}
+		}
+
+
+		return maxCount;
+	}
+
+	private boolean intersect(TrainStop trainStop, LocalDateTime minArrival, LocalDateTime maxDeparture) {
+		return (trainStop.arrival.isAfter(minArrival) || trainStop.arrival.isEqual(minArrival))
+				&&
+				(trainStop.arrival.isBefore(maxDeparture) || trainStop.arrival.isEqual(maxDeparture));
 	}
 }

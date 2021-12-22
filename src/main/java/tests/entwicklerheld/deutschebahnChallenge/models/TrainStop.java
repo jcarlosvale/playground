@@ -1,9 +1,10 @@
 package tests.entwicklerheld.deutschebahnChallenge.models;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import lombok.Builder;
 
+@Builder
 public class TrainStop {
 	public String trainNumber;
 	public LocalDateTime arrival;
