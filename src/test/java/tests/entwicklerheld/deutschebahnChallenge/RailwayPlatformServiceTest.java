@@ -5,7 +5,6 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -203,7 +202,7 @@ public class RailwayPlatformServiceTest {
 
         //THEN
         assertEquals(11662, actual.size());
-        assertEquals(3, minPlatforms);
+        assertEquals(6, minPlatforms);
     }
 
     @Test
@@ -221,7 +220,7 @@ public class RailwayPlatformServiceTest {
 
         //THEN
         assertEquals(13523, actual.size());
-        assertEquals(6, minPlatforms);
+        assertEquals(8, minPlatforms);
     }
 
     @Test

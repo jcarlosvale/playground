@@ -134,15 +134,15 @@ public class RailwayPlatformService {
 			int count = 0;
 
 			if (intersect(trainStops.get(i), minArrival, maxDeparture)) {
+				List<TrainStop> conflictTrainStopList = new ArrayList<>();
 				while(i < trainStops.size() && intersect(trainStops.get(i), minArrival, maxDeparture)) {
 					count++;
 					minArrival = trainStops.get(i).arrival.isBefore(minArrival) ? trainStops.get(i).arrival : minArrival;
 					maxDeparture = trainStops.get(i).departure.isAfter(maxDeparture) ? trainStops.get(i).departure : maxDeparture;
+					conflictTrainStopList.add(trainStops.get(i));
 					i++;
 				}
-				if(count == 6) {
-					System.out.println("DEBUG");
-				}
+				count = calculateMinimuNumberOfPlatforms(conflictTrainStopList, minArrival, maxDeparture);
 				maxCount = Math.max(maxCount, count);
 				if(i >= trainStops.size()) break;
 				minArrival = trainStops.get(i).arrival;
@@ -153,6 +153,27 @@ public class RailwayPlatformService {
 		}
 
 
+		return maxCount;
+	}
+
+	private int calculateMinimuNumberOfPlatforms(List<TrainStop> conflictTrainStopList, LocalDateTime minArrival, LocalDateTime maxDeparture) {
+		//normalize
+		int size = (int) Duration.between(minArrival, maxDeparture).toMinutes();
+		int [] array = new int[size];
+		//fill array
+		for(TrainStop trainStop: conflictTrainStopList) {
+			int beginIndex = (int) Duration.between(minArrival, trainStop.arrival).toMinutes();
+			int endIndex = (int) Duration.between(minArrival, trainStop.departure).toMinutes();
+			array[beginIndex] += 1;
+			if(endIndex+1 < array.length) array[endIndex+1] -= 1;
+		}
+		//sum
+		int maxCount = 0;
+		int sum = 0;
+		for (int i = 0; i < array.length; i++) {
+			sum += array[i];
+			maxCount = Math.max(sum, maxCount);
+		}
 		return maxCount;
 	}
 
