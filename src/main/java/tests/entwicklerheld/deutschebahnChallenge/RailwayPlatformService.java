@@ -50,16 +50,7 @@ public class RailwayPlatformService {
 		List<TrainStop> trainStopList = new ArrayList<>();
 		Map<String, Board> arrivalsMap = new HashMap<>();
 
-		List<BoardTime> boardTimeList =
-				arrivals
-				.stream()
-				.map(board -> new BoardTime(board, true, toDateTime(board.dateTime)))
-				.collect(Collectors.toList());
-		boardTimeList.addAll(
-				departures
-						.stream()
-						.map(board -> new BoardTime(board, false, toDateTime(board.dateTime)))
-						.collect(Collectors.toList()));
+		List<BoardTime> boardTimeList = getBoardTimes(arrivals, departures);
 		boardTimeList.sort(Comparator.comparing(BoardTime::getDateTime));
 
 		LocalDateTime departureDateTime;
@@ -79,13 +70,9 @@ public class RailwayPlatformService {
 				}
 				arrivalsMap.put(trainName, board);
 			} else { //departures
-				if (arrivalsMap.containsKey(trainName)) {
-					if (isValidInterval(arrivalsMap.get(trainName).dateTime, board.dateTime)) {
-						arrivalDateTime = toDateTime(arrivalsMap.get(trainName).dateTime);
-						arrivalsMap.remove(trainName);
-					} else {
-						arrivalDateTime = toDateTime(board.dateTime).minusMinutes(BLOCK_PERIOD_IN_MINUTES);
-					}
+				if (arrivalsMap.containsKey(trainName) && isValidInterval(arrivalsMap.get(trainName).dateTime, board.dateTime)) {
+					arrivalDateTime = toDateTime(arrivalsMap.get(trainName).dateTime);
+					arrivalsMap.remove(trainName);
 				} else {
 					arrivalDateTime = toDateTime(board.dateTime).minusMinutes(BLOCK_PERIOD_IN_MINUTES);
 				}
@@ -106,6 +93,20 @@ public class RailwayPlatformService {
 
 
 		return trainStopList;
+	}
+
+	private List<BoardTime> getBoardTimes(List<Board> arrivals, List<Board> departures) {
+		List<BoardTime> boardTimeList =
+				arrivals
+				.stream()
+				.map(board -> new BoardTime(board, true, toDateTime(board.dateTime)))
+				.collect(Collectors.toList());
+		boardTimeList.addAll(
+				departures
+						.stream()
+						.map(board -> new BoardTime(board, false, toDateTime(board.dateTime)))
+						.collect(Collectors.toList()));
+		return boardTimeList;
 	}
 
 	private boolean isValidInterval(String strArrivalDateTime, String strDepartureDateTime) {
@@ -151,8 +152,6 @@ public class RailwayPlatformService {
 				i++;
 			}
 		}
-
-
 		return maxCount;
 	}
 
