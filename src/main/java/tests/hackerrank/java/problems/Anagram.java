@@ -3,32 +3,31 @@ package tests.hackerrank.java.problems;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 /*
 https://www.hackerrank.com/challenges/java-anagrams/problem
  */
 public class Anagram {
-    static boolean isAnagram(String a, String b) {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+    static boolean isAnagram(String firstWord, String secondWord) {
+        firstWord = firstWord.toUpperCase();
+        secondWord = secondWord.toUpperCase();
         boolean isAnagrams = false;
         Map<Character, Integer> map = new HashMap<>();
-        if (a.length() == b.length()) {
+        if (firstWord.length() == secondWord.length()) {
             isAnagrams = true;
-            for (int i = 0; i < a.length(); i++) {
-                map.put(a.charAt(i), map.getOrDefault(a.charAt(i),0)+1);
+            for (int i = 0; i < firstWord.length(); i++) {
+                map.put(firstWord.charAt(i), map.getOrDefault(firstWord.charAt(i),0)+1);
             }
-            for (int i = 0; i < b.length(); i++) {
-                Integer cont = map.get(b.charAt(i));
+            for (int i = 0; i < secondWord.length(); i++) {
+                Integer cont = map.get(secondWord.charAt(i));
                 if (cont == null) {
                     isAnagrams = false;
                     break;
                 }
                 if (cont == 1) {
-                    map.remove(b.charAt(i));
+                    map.remove(secondWord.charAt(i));
                 } else {
-                    map.put(b.charAt(i), cont-1);
+                    map.put(secondWord.charAt(i), cont-1);
                 }
             }
         }
