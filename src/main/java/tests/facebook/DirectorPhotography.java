@@ -57,87 +57,52 @@ package tests.facebook;
 class DirectorPhotography {
     public static int getArtisticPhotographCount(int N, String C, int X, int Y) {
         int count = 0;
-        int [] [] PAB = new int [3][N];
-        int [] [] BAP = new int [3][N];
+        int [] P = new int [N];
+        int [] A = new int [N];
         char[] characters = C.toCharArray();
 
         //PAB
         for (int i = 0; i < characters.length; i++) {
             char c = characters[i];
-            if (i > 0) PAB[0][i] += PAB[0][i-1];
-            if (c == 'P') {
-                int start = i + X;
-                int end = i + Y;
-                if(start < N) {
-                    PAB[0][start] += 1;
-                }
-                if (end + 1 < N) {
-                    PAB[0][end+1] += -1;
-                }
-            } else {
-                if (c == 'B') PAB[2][i] = 1;
+            if (i > 0) {
+                P[i] += P[i-1];
+                A[i] += A[i-1];
+            }
+
+            if(c == 'P') {
+                if (i+X < N) P[i+X] += 1;
+                if (i+Y+1 < N) P[i+Y+1] -= 1;
+            }
+            if ((c == 'A') && (P[i] > 0)) {
+                if (i+X < N) A[i+X] += 1;
+                if (i+Y+1 < N) A[i+Y+1] -= 1;
+            }
+            if(c == 'B') {
+                count += P[i] * A[i];
             }
         }
 
-        for (int i = 0; i < characters.length; i++) {
-            char c = characters[i];
-            if (c == 'A') {
-                if(PAB[0][i] > 0) {
-                    int start = i + X;
-                    int end = i + Y;
-                    if(start < N) {
-                        PAB[1][start] += 1;
-                    }
-                    if (end + 1 < N) {
-                        PAB[1][end+1] += -1;
-                    }
-                }
-            } else {
-                if (i > 0) PAB[1][i] += PAB[1][i-1];
-            }
-        }
-
+        A = new int [N];
+        int [] B = new int [N];
         //BAP
         for (int i = 0; i < characters.length; i++) {
             char c = characters[i];
-            if (c == 'B') {
-                int start = i + X;
-                int end = i + Y;
-                if(start < N) {
-                    BAP[0][start] += 1;
-                }
-                if (end + 1 < N) {
-                    BAP[0][end+1] += -1;
-                }
-            } else {
-                if (c == 'P') BAP[2][i] = 1;
-                if (i > 0) BAP[0][i] += BAP[0][i-1];
+            if (i > 0) {
+                B[i] += B[i-1];
+                A[i] += A[i-1];
             }
-        }
 
-        for (int i = 0; i < characters.length; i++) {
-            char c = characters[i];
-            if (i > 0) BAP[1][i] += BAP[1][i-1];
-            if (c == 'A') {
-                if(BAP[0][i] > 0) {
-                    int start = i + X;
-                    int end = i + Y;
-                    if(start < N) {
-                        BAP[1][start] += 1;
-                    }
-                    if (end + 1 < N) {
-                        BAP[1][end+1] += -1;
-                    }
-                }
+            if(c == 'B') {
+                if (i+X < N) B[i+X] += 1;
+                if (i+Y+1 < N) B[i+Y+1] -= 1;
             }
-        }
-        //prefixed sum
-        //sum(BAP);
-
-        //calculation
-        for (int i = 0; i < N; i++) {
-            count += PAB[0][i] * PAB[1][i] * PAB[2][i];
-            count += BAP[0][i] * BAP[1][i] * BAP[2][i];
+            if ((c == 'A') && (B[i] > 0)) {
+                if (i+X < N) A[i+X] += 1;
+                if (i+Y+1 < N) A[i+Y+1] -= 1;
+            }
+            if(c == 'P') {
+                count += B[i] * A[i];
+            }
         }
 
         return count;
