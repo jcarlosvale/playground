@@ -1,5 +1,8 @@
 package tests.facebook;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A photography set consists of NN cells in a row, numbered from 11 to NN in order, and can be represented by a string CC of length NN. Each cell ii is one of the following types (indicated by C_iC
  * i
@@ -56,56 +59,52 @@ package tests.facebook;
  */
 class DirectorPhotography {
     public static int getArtisticPhotographCount(int N, String C, int X, int Y) {
-        int count = 0;
-        int [] P = new int [N];
-        int [] A = new int [N];
-        char[] characters = C.toCharArray();
+        int ct = 0;
+        // left part of sliding window
+        Map<Character, Long> left = new HashMap<>();
+        left.put('B', 0L);
+        left.put('P', 0L);
 
-        //PAB
-        for (int i = 0; i < characters.length; i++) {
-            char c = characters[i];
-            if (i > 0) {
-                P[i] += P[i-1];
-                A[i] += A[i-1];
-            }
+        // right part of sliding window
+        Map<Character, Long> right = new HashMap<>();
+        right.put('B', 0L);
+        right.put('P', 0L);
 
-            if(c == 'P') {
-                if (i+X < N) P[i+X] += 1;
-                if (i+Y+1 < N) P[i+Y+1] -= 1;
-            }
-            if ((c == 'A') && (P[i] > 0)) {
-                if (i+X < N) A[i+X] += 1;
-                if (i+Y+1 < N) A[i+Y+1] -= 1;
-            }
-            if(c == 'B') {
-                count += P[i] * A[i];
-            }
+        // find an A
+        int i = 0;
+        while(i < N && C.charAt(i) != 'A') i++;
+        if (i == N) return 0;
+
+        // initialize left part of sliding window
+        for(int j = X; j <= Y && i-j >=0; j++) {
+            left.computeIfPresent(C.charAt(i-j), (character, aLong) -> aLong+1);
         }
 
-        A = new int [N];
-        int [] B = new int [N];
-        //BAP
-        for (int i = 0; i < characters.length; i++) {
-            char c = characters[i];
-            if (i > 0) {
-                B[i] += B[i-1];
-                A[i] += A[i-1];
-            }
-
-            if(c == 'B') {
-                if (i+X < N) B[i+X] += 1;
-                if (i+Y+1 < N) B[i+Y+1] -= 1;
-            }
-            if ((c == 'A') && (B[i] > 0)) {
-                if (i+X < N) A[i+X] += 1;
-                if (i+Y+1 < N) A[i+Y+1] -= 1;
-            }
-            if(c == 'P') {
-                count += B[i] * A[i];
-            }
+        // initialize right part of sliding window
+        for(var j = X; j <= Y && i+j < N; j++) {
+            right.computeIfPresent(C.charAt(i+j), (character, aLong) -> aLong+1);
         }
 
-        return count;
+        // slide the window
+        while(i < N)
+        {
+            if (C.charAt(i) == 'A') {
+                // compute number of artistic photographs within the window
+                ct += left.get('P')*right.get('B')+left.get('B')*right.get('P');
+            }
+
+            // left part remove and append character as we slide the window
+            if (i - Y >= 0) left.computeIfPresent(C.charAt(i - Y), (character, aLong) -> aLong-1);
+            if (i - X + 1 >= 0) left.computeIfPresent(C.charAt(i - X + 1), (character, aLong) -> aLong+1);
+
+            // right part remove and append character as we slide the window
+            if (i + X < N) right.computeIfPresent(C.charAt(i + X), (character, aLong) -> aLong-1);
+            if (i + Y + 1 < N) right.computeIfPresent(C.charAt(i + Y + 1), (character, aLong) -> aLong+1);
+
+            i++;
+        }
+
+        return ct;
     }
 
     public static void main(String[] args) {
