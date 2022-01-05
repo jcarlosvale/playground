@@ -11,11 +11,12 @@ class MissingMail {
             int currentValue = V[i];
             double currentDayProfit = currentValue - C;
             double nextCollectDayProfit = calculateProfit(currentValue, i, lastDayToCollect, S);
-            if (currentDayProfit >= nextCollectDayProfit) {
+
+            if ((nextCollectDayProfit > currentDayProfit) && (nextCollectDayProfit + collectedValues[lastDayToCollect] > currentDayProfit)) {
+                collectedValues[lastDayToCollect] += nextCollectDayProfit;
+            } else {
                 collectedValues[i] = currentDayProfit;
                 lastDayToCollect = i;
-            } else {
-                collectedValues[lastDayToCollect] += nextCollectDayProfit;
             }
         }
 
@@ -39,6 +40,8 @@ class MissingMail {
         System.out.println(getMaxExpectedProfit(5, new int[]{10,2,8,6,4}, 3, 0.15)); //20.10
 
         System.out.println(getMaxExpectedProfit(1, new int[]{10}, 11, 0.15)); //0
+        System.out.println(getMaxExpectedProfit(5, new int[]{10,2,8,6,0}, 4, 0.5)); //13
+
 
     }
 
