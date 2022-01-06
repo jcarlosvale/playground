@@ -41,6 +41,8 @@ class MissingMail {
 
         System.out.println(getMaxExpectedProfit(1, new int[]{10}, 11, 0.15)); //0
         System.out.println(getMaxExpectedProfit(5, new int[]{10,2,8,6,0}, 4, 0.5)); //13
+        System.out.println(getMaxExpectedProfit(3, new int[]{10,0,2}, 6, 0.05)); //5.x
+
 
 
     }
