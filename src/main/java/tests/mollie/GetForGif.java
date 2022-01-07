@@ -51,11 +51,12 @@ public class GetForGif {
                     //verify response code
                     String responseCodeFields = contents[2];
                     if (responseCodeFields.trim().startsWith("200 ")) {
-                        String[] path = request.split("/");
-                        if (path.length > 0 && path[path.length-1].toUpperCase(Locale.ROOT).contains(".GIF ")) {
-                            int lastGifPosition = path[path.length-1].toUpperCase(Locale.ROOT).lastIndexOf(".GIF ") + 5;
-                            String gifName = path[path.length-1].substring(0, lastGifPosition).trim();
-                            gifNamesSet.add(gifName);
+                        for(String path : request.split("/")) {
+                            if (path.toUpperCase(Locale.ROOT).contains(".GIF ")) {
+                                int lastGifPosition = path.toUpperCase(Locale.ROOT).lastIndexOf(".GIF ") + 5;
+                                String gifName = path.substring(0, lastGifPosition).trim();
+                                gifNamesSet.add(gifName);
+                            }
                         }
                     }
                 }
