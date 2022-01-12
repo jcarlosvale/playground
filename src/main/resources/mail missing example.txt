@@ -1,0 +1,79 @@
+V = [10, 2, 8, 6, 4]
+
+Possibilidades
+nao_retirou_anterior,	nao_retirou_hoje,	nao_retirou_amanha
+nao_retirou_anterior, 	nao_retirou_hoje,	retirou_amanha
+nao_retirou_anterior, 	retirou_hoje,		nao_retirou_amanha
+nao_retirou_anterior, 	retirou_hoje, 		retirou_amanha
+retirou_anterior, 		nao_retirou_hoje, 	nao_retirou_amanha
+retirou_anterior, 		nao_retirou_hoje, 	retirou_amanha
+retirou_anterior, 		retirou_hoje, 		nao_retirou_amanha
+retirou_anterior, 		retirou_hoje, 		retirou_amanha
+
+nao_retirou_anterior,	nao_retirou_hoje,	
+nao_retirou_anterior, 	retirou_hoje,		
+retirou_anterior, 		nao_retirou_hoje, 	
+retirou_anterior, 		retirou_hoje, 		
+
+DIA Xi (Vi, Acc)
+	nao_retirou_anterior[i] = acc
+	retirou_anterior[i] = retirou_hoje[i-1]
+
+DIA 0
+	DIA(1,5,0)										= 
+	
+DIA 1 (10, 0)
+	10-3 + DIA(2,5,0)								= 10-3 + 13.10825  = 20.10825
+	DIA(2,5,0.85*10)								= 20.025
+
+DIA(2,5,0)
+	2 - 3 + 0 + DIA(3,5,0)							= 2 - 3 + 0 + 11.88 = 10.88
+	DIA(3,5,2*0.85)									= 13.10825 
+
+DIA(2,5,0.85*10)
+	2 - 3 + 0.85*10 + DIA(3,5,0)					= 2 - 3 + 0.85*10 + 11.88 = 19.38 
+	DIA(3,5,0.85 *( 2 + 0.85 * 10))					= 20.025
+	
+DIA(3,5,0)	
+	8 - 3 + 0 + DIA(4,5,0)							= 8 - 3 + 0 + 6.1 = 11.1
+	DIA(4,5, 0.85 * 8)								= 11.88
+
+DIA(3,5,2*0.85)
+	8 - 3 + 2 * 0.85 + DIA(4,5,0)					= 8 - 3 + 2 * 0.85 + 6.1	= 12.8
+	DIA(4,5, 0.85 * (8 + 2*0.85))					= 13.10825
+
+DIA(3,5,0.85 *( 2 + 0.85 * 10))
+	8 - 3 + 0.85 *( 2 + 0.85 * 10) + DIA(4,5,0)		= 8 - 3 + 0.85 *( 2 + 0.85 * 10) + 6.1 = 20.025
+	DIA(4,5, 0.85 * (8 + 0.85 *( 2 + 0.85 * 10))) 	= 18.38625
+
+DIA(4,5,0)
+	6 - 3 + 0 + DIA(5,5,0)				= 6 - 3 + 0 + 1 = 4
+	DIA(5,5,6 * 0.85)					= 6.1
+
+DIA(4,5, 0.85 * 8)
+	6 - 3 + 0.85 * 8 + DIA(5, 5, 0)		= 10.8
+	DIA(5, 5, 0.85 * (6 + 0.85 * 8))	= 11.88
+
+DIA(4,5, 0.85 * (8 + 2*0.85))
+	6 - 3 + 0.85 * (8 + 2*0.85) + DIA(5, 5, 0)	= 6 - 3 + 0.85 * (8 + 2*0.85) + 1 									= 12.245					
+	DIA(5, 5, 0.85 * (6 + 0.85 * (8 + 2*0.85)))																		= 13.10825
+
+DIA(4,5, 0.85 * (8 + 0.85 *( 2 + 0.85 * 10)))
+	6 - 3 + 0.85 * (8 + 0.85 *( 2 + 0.85 * 10)) + DIA(5, 5, 0)	= 6 - 3 + 0.85 * (8 + 0.85 *( 2 + 0.85 * 10)) + 1 	= 18.38625					
+	DIA(5,5,0.85 * (6 + + 0.85 * (8 + 0.85 *( 2 + 0.85 * 10)))) 												  	= 18.3283125
+
+DIA(5,5,0)
+	4 - 3 + 0													= 1
+	0
+
+DIA(5,5,6 * 0.85)
+	4 - 3 + 6 * 0.85											= 6.1
+
+DIA(5, 5, 0.85 * (6 + 0.85 * 8))
+	4 - 3 + 0.85 * (6 + 0.85 * 8)								= 11.88
+
+DIA(5, 5, 0.85 * (6 + 0.85 * (8 + 2*0.85)))
+	4 - 3 + 0.85 * (6 + 0.85 * (8 + 2*0.85))					= 13.10825
+
+DIA(5,5,0.85 * (6 + 0.85 * (8 + 0.85 *( 2 + 0.85 * 10)))) 		
+	4 - 3 + 0.85 * (6 + 0.85 * (8 + 0.85 *( 2 + 0.85 * 10))) 	= 18.3283125
