@@ -1,5 +1,7 @@
 package tests.letscode;
 
+import java.util.Objects;
+
 public class Pessoa {
 
     //ENCAPSULAMENTO
@@ -50,10 +52,16 @@ public class Pessoa {
                 '}';
     }
 
-//    public boolean equals(Object object) {
-//        Pessoa pessoa = (Pessoa) object;
-//        return this.nome.equals(pessoa.nome) && (this.idade == pessoa.idade);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pessoa pessoa = (Pessoa) o;
+        return idade == pessoa.idade ;
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, idade);
+    }
 }
