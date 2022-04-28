@@ -1,13 +1,16 @@
-package tests.letscode.concurrency.tasks.step.C;
+package tests.letscode.concurrency.tasks.step.D;
+
+import tests.letscode.concurrency.tasks.step.C.PrintTaskLambda;
+import tests.letscode.concurrency.tasks.step.C.PrintTaskThread;
 
 public class PrintService {
 
     private static final int NUM_TASKS = 10;
 
     public static void main(String[] args) {
-//        executeRunnable();
+        executeRunnable();
 //        executeThreads();
-        executeLambdaExpression();
+//        executeLambdaExpression();
     }
 
     /*
