@@ -45,6 +45,7 @@ public class Q3 {
         System.out.println(solution(new int[] {4,2,-3,1,6})); //true
         System.out.println(solution(new int[] {4,2,0,1,6})); //true
         System.out.println(solution(new int[] {-3,2,3,1,6})); //false
-
+        int a =1, b=2, c=3;
+        System.out.println(a==1 && b>1 || c !=0);
     }
 }
