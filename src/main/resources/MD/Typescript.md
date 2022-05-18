@@ -86,5 +86,88 @@ function nomeCompleto(nome: string, sobrenome: string) {
 nomeCompleto('João', 'Silva');
 ```
 
+### number
+
+```ts
+let idade: number;
+
+idade = 25;
+
+function somar(a: number, b: number) {
+    return a + b;
+}
+
+somar(1,1);
+somar(2,4);
+```
+
+### boolean
+
+```ts
+let active: boolean;
+
+active = true;
+
+function verificarAtivo(ativo: boolean) {
+    if (active) {
+        return 'Ativo';
+    } else {
+        return 'Inativo';
+    }
+}
+
+verificarAtivo(false);
+```
+
+### array
+
+```ts
+const nomes: string[] = ['João', 'Maria', 'Pedro'];
+
+function printNames(nomes: string[]) {
+  return `nomes: ${nomes.join(', ')}`;
+}
+
+console.log(printNames(nomes));
+```
+
+### tuple
+
+```ts
+const pessoas: [string, string, string] = ['João', 'Maria', 'Pedro'];
+
+const joao: [string, number] = ['João', 25];
+
+const maria: [string, number] = ['Maria', 20];
+```
+
+### enum
+
+```ts
+enum Profiles{
+    admin,
+    editor, 
+    user
+}
+
+enum Cores {
+  red = '\u001b[31m',
+  black = '\u001b[30m',
+}
+
+const usuario = {
+    level: Profiles.admin
+}
+
+console.log(usuario);
+```
+
+### other types
+* **any**
+* **unknown**
+* **undefined** 
+* **null**
+* **object**
+
 References:
 [Typescript Lang](https://www.typescriptlang.org/)

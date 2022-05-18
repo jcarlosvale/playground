@@ -250,13 +250,213 @@ main interrompido!
 Mensagem enviada!!
 ```
 
-
 ## The Concurrency API
+
+* [java.util.concurrent](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/package-summary.html) package
+  * [ExecutorService](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/ExecutorService.html) interface, which defines services that create and manage threads.
 
 ### Single-Thread Executor
 
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class MultiplasThreadsComExecutorService {
+
+  public static void main(String[] args) {
+    Runnable imprimirCatalogo = () -> System.out.println("Imprimindo catalogo");
+    Runnable imprimirRegistros = () -> {
+      for (int i = 0; i < 4; i++)
+        System.out.println("Imprimindo registro: " + i);
+    };
+
+    ExecutorService service = Executors.newSingleThreadExecutor();
+    try {
+      System.out.println("inicio");
+      service.execute(imprimirCatalogo);
+      service.execute(imprimirRegistros);
+      service.execute(imprimirCatalogo);
+      System.out.println("fim");
+
+    } finally {
+      service.shutdown();
+    }
+  }
+}
+```
+
+```java
+inicio
+fim
+Imprimindo catalogo
+Imprimindo registro: 0
+Imprimindo registro: 1
+Imprimindo registro: 2
+Imprimindo registro: 3
+Imprimindo catalogo
+```
+
+```java
+ExecutorService service = Executors.newSingleThreadExecutor();
+try {
+    System.out.println("inicio");
+    service.execute(imprimirCatalogo);
+    service.execute(imprimirRegistros);
+    service.execute(imprimirCatalogo);
+    System.out.println("fim");
+
+} finally {
+    service.shutdown();
+}
+```
+
+* _newSingleThreadExecutor()_ method to create the service.
+  * instead of 4 threads we have 2;
+  * tasks are guaranteed to be executed sequentially
+* method _execute()_
+  * receives a Runnable instance and completes the task asynchronously.
+  * void return
+
 ### Shutting Downs a Thread Executor
+
+* method _shutdown()_ must be called, the thread executor creates a _non-daemon_ thread.
+  * application _never terminating_
+* other related methods
+  * isShutdown()
+    * returns true if shutdown() was executed, new tasks are rejected and executes the previously submitted tasks.
+  * isTerminated()
+    * returns true when no tasks running and the service rejects new tasks because shutdown() was executed.
+* method _shutdownNow()_ is a shutdown() plus try to stop the current task and discard the submitted tasks.
 
 ### Submitting Tasks
 
+* method _submit()_ , returns a _[Future](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html)_ instance.
+  * used to return value;
+  * used to verify if the task has finished.
+
+|Method name | Description|
+|------------|------------|
+|void execute(Runnable command) | Executes Runnable task at some point in future. |
+|Future<?> submit(Runnable task) | Executes Runnable task at some point in future and returns Future representing task.|
+|\<T\> Future\<T\> submit(Callable\<\T\> task) | Executes Callable task at some point in future and returns Future representing pending results of task. |
+| \<T\> List\<Future\<T\>\> invokeAll(Collection<? extends Callable\<T\>> tasks) | Executes given tasks and waits for all tasks to complete. Returns List of Future instances in same order in which they were in original collection. |
+|\<T\> T invokeAny(Collection<? extends Callable\<T\>> tasks) | Executes given tasks and waits for at least one to complete.|
+
+<figcaption align = "left"><b> Tabela 1: ExecutorService methods </b></figcaption><br>
+
+ExecutorService methods
+
 ### Waiting for Results
+
+* the _submit()_ method returns a Future<V> instance that can be used to determine this result.
+
+```java
+Future<?> future = service.submit(() -> System.out.println("Primeira thread"));
+```
+
+|Method name | Description|
+|------------|------------|
+|boolean isDone() | Returns true if task was completed, threw exception, or was cancelled.|
+|boolean isCancelled() | Returns true if task was cancelled before it completed normally.|
+|boolean cancel(boolean mayInterruptIfRunning) | Attempts to cancel execution of task and returns true if it was successfully cancelled or false if it could not be cancelled or is complete. |
+| V get() | Retrieves result of task, waiting endlessly if it is not yet available.|
+|V get(long timeout, TimeUnit unit)| Retrieves result of task, waiting specified amount of time. If result is not ready by time timeout is reached, checked TimeoutException will be thrown.|
+
+<figcaption align = "left"><b> Tabela 2: Future methods </b></figcaption><br>
+
+```java
+import java.util.concurrent.*;
+
+public class EnviarMensagemComFuture {
+
+    private static boolean mensagemEnviada = false;
+
+    public static void main(String[] a) throws ExecutionException, InterruptedException {
+
+        ExecutorService service = Executors.newSingleThreadExecutor();
+
+        Future<?> enviandoMensagem = service.submit(() -> {
+            try {
+                Thread.sleep(2000); //2 segundos
+                mensagemEnviada = true;
+            } catch (InterruptedException e) {
+                System.out.println("thread Interrompida!");
+            }
+        });
+
+        try {
+            enviandoMensagem.get(5, TimeUnit.SECONDS);
+            if (mensagemEnviada) {
+                System.out.println("Mensagem enviada!!");
+            }
+        } catch (TimeoutException e) {
+            System.out.println("Tempo expirado");
+        } finally {
+            service.shutdown();
+        }
+    }
+}
+```
+
+* because the method is _void_, the _Future_ in this case returns a _null_
+* the method _get()_ from _Future_ can receive an optional [TimeUnit](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html) to execute.
+
+#### Callable
+
+* _[Callable](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Callable.html)_ is a functional interface similar to _Runnable_
+
+```java
+@FunctionalInterface
+public interface Callable<V> {
+  V call() throws Exception;
+}
+```
+
+```java
+import java.util.concurrent.*;
+
+public class Somar {
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        var service = Executors.newSingleThreadExecutor();
+        try {
+            Future<Integer> somar = service.submit(() -> 14 + 27);
+            System.out.println(somar.get()); // 41
+        } finally {
+            service.shutdown();
+        }
+    }
+}
+```
+
+* method _awaitTermination()_, waits a specified time to complete all tasks, returning sooner if all tasks finish or an InterruptedException is detected.
+
+```java
+ExecutorService service = Executors.newSingleThreadExecutor();
+try {
+// várias tarefas são adicionadas ao service
+...
+} finally {
+service.shutdown();
+}
+service.awaitTermination(1, TimeUnit.MINUTES);
+// Check whether all tasks are finished
+if(service.isTerminated()) System.out.println("Tarefas executadas!");
+else System.out.println("Ainda existe tarefa executando");
+```
+
+### Scheduling Tasks
+
+### Increasing Concurrency with Pools
+
+## Writing Thread-Safe Code
+
+### Understanding Thread-Safety
+
+### Accessing Data with volatile
+
+### Protecting Data with Atomic Classes
+
+### Improving Access with synchronized Blocks
+
+### Synchronizing on Methods
