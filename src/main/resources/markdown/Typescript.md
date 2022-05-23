@@ -161,13 +161,177 @@ const usuario = {
 
 console.log(usuario);
 ```
+### type alias
+
+```ts
+type User = {
+  name : string;
+  lastName: string;
+  birthday: string;
+  age?: number;  //optional
+}
+
+const user: User = {
+  name: 'some name',
+  lastName: 'some last name',
+  birthday: '01/01/1900',
+}
+```
+
+### union type
+```ts
+type LogLevel = 'info' | 'error' | 'debug'
+
+function logMessage(message: string, level: LogLevel) {
+  console.log(`[${level}] - ${message}`)
+}
+
+logMessage("A message", 'info')
+```
+
+### intersection types
+
+```ts
+type About = {
+  bio: string;
+  interests: string[];
+}
+
+type Profile = User & About;
+const userWithProfile: Profile = {
+  name: 'name',
+  lastName: 'lastname',
+  birthday: '01/01/1900',
+  bio: 'bio',
+  interests: ['games', 'sports'],
+}
+```
 
 ### other types
 * **any**
+  * type not defined;
+```ts
+let value: any;
+
+value = 25;
+value = '25';
+```
+
 * **unknown**
-* **undefined** 
+  * type _any_ + validations.
+```ts
+let informations: unknown;
+let completeInformations: string;
+
+completeInformations = informations; //don't compile, with any compile
+```
+
+* **undefined**
+  * instances without values;
+
 * **null**
+
 * **object**
+
+* **void**
+
+* **never**, used in functions:
+  * error return;
+  * infinite loops;
+
+## Objects
+
+```ts
+class User {
+  
+  public name;
+  public idade;
+  
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+//inheritance
+class Player extends User {
+  
+  public game;
+  
+  constructor(name: string, age: number, game: string) {
+    super(name, age);
+    this.game = game;
+  }
+  
+  currentGame() {
+    return `I am playing ${this.game}`; 
+  }
+  
+  static currentTime() {
+    return Date();
+  }
+}
+
+const user = new User("name", 15)
+console.log(user)
+
+const player = new Player("name", 18, "game");
+console.log(player.currentGame());
+
+//static
+console.log(Player.currentTime());
+```
+
+### private x protected
+```ts
+class Game {
+  private name;
+  protected otherName;
+  
+  constructor(name: string, otherName: string) {
+    this.name = name;
+    this.otherName = otherName;
+  }
+  
+  getName() {
+    return name;
+  }
+}
+
+class SpecialGame extends Game {
+  private description;
+  
+  constructor(name: string, description: string) {
+    super(name, "other");
+    this.description = description;
+  }
+  
+  getOtherName() {
+    return this.otherName;
+  }
+}
+```
+
+### interface
+
+```ts
+interface IGame {
+  getDescription(): string;
+}
+
+class Game implements IGame {
+  
+  getDescription(): string {
+    return "";
+  }
+}
+
+const objeto: IGame = {
+  getDescription(): string {
+    return "something";
+  }
+}
+```
 
 References:
 [Typescript Lang](https://www.typescriptlang.org/)
