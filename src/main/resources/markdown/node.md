@@ -4,7 +4,26 @@
 
 ## Initial Steps
 
-* create project
+### Hello World
+
+````javascript
+const http = require('http');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+````
+
+### Create project
 ```javascript
 λ npm init
 This utility will walk you through creating a package.json file.
