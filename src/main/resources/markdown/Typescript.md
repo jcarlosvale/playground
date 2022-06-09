@@ -52,6 +52,15 @@ You can learn more at https://aka.ms/tsconfig.json
 * compile ts
 ```
 npx tsc
+
+or
+
+npx tsc --watch
+```
+
+* import node packages
+```javascript
+λ npm install @types/node
 ```
 
 * modify your `package.json` to compile using `npm`:
