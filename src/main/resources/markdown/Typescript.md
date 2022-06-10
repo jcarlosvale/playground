@@ -2,7 +2,7 @@
 
 ## Commands:
 * initialize a npm empty package (*package.json*)
-```json
+```javascript
 npm init -y
 
 Wrote to C:\TypeScript\package.json:
