@@ -1,10 +1,8 @@
 # Node
 
-* [GitHub](https://github.com/jcarlosvale/client-server-example)
+* [GitHub](https://github.com/jcarlosvale/AprendendoNode)
 
-## Initial Steps
-
-### Hello World
+## Hello World
 
 ````javascript
 const http = require('http');
@@ -23,7 +21,7 @@ server.listen(port, hostname, () => {
 });
 ````
 
-### CRUD using FileSystem
+## CRUD using FileSystem
 
 ```javascript
 //incluindo uma biblioteca
@@ -92,49 +90,9 @@ server.listen(port, hostname, () => {
 //localhost:3000/selecionar-usuario?nome=teste&idade=10&id=1
 ```
 
-### Create project
+## Example 2 - Client / Server
 ```javascript
 λ npm init
-This utility will walk you through creating a package.json file.
-It only covers the most common items, and tries to guess sensible defaults.
-
-See `npm help init` for definitive documentation on these fields
-and exactly what they do.
-
-Use `npm install <pkg>` afterwards to install a package and
-save it as a dependency in the package.json file.
-
-Press ^C at any time to quit.
-package name: (client-server-example)
-version: (1.0.0)
-description:
-entry point: (index.js) src/main.js
-test command:
-git repository: https://github.com/jcarlosvale/client-server-example.git
-keywords:
-author: Joao Vale
-license: (ISC)
-About to write to C:\Pessoal\Projects\client-server-example\package.json:
-
-{
-  "name": "client-server-example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jcarlosvale/client-server-example.git"
-  },
-  "author": "Joao Vale",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jcarlosvale/client-server-example/issues"
-  },
-  "homepage": "https://github.com/jcarlosvale/client-server-example#readme"
-}
 ```
 
 * install **ECMAScript** module
@@ -165,7 +123,7 @@ console.log("Hello World!");
 * run project
   * **_npm run start_**
 
-## Server node
+### Server node
 
 ```javascript
 import { createServer} from 'http';
@@ -247,7 +205,7 @@ server.listen(PORT, HOSTNAME, () => {
 });
 ```
 
-## pnpm
+### using pnpm
 
 * install
 ```javascript
@@ -403,10 +361,3 @@ export default function SignIn() {
   );
 } 
 ```
-
-## Other Project
-
-# Dependencies:
-1 - express
-2 - npm i sucrase -D
-3 - npm i nodemon -D
