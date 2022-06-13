@@ -1,6 +1,9 @@
 # Node
 
+* [Example REST API](https://mherman.org/blog/designing-a-restful-api-with-node-and-postgres/)
 * [GitHub](https://github.com/jcarlosvale/AprendendoNode)
+* [Node-Fetch](https://www.npmjs.com/package/node-fetch)
+* [Express Generator](https://expressjs.com/en/starter/generator.html)
 
 ## Hello World
 
