@@ -364,3 +364,37 @@ export default function SignIn() {
   );
 } 
 ```
+## Express Generator
+
+* install and create
+```javascript
+npx express-generator
+```
+
+OR
+
+* install
+```javascript
+λ npm install express-generator -g
+```
+
+* create using a template -> monolithic
+```javascript
+λ express tdd_bdd_jasmine_cucumber --view ejs
+```
+
+## Jasmine
+
+* installing
+
+```javascript
+npm install --save-dev jasmine
+
+jasmine init
+```
+
+## Cucumber
+
+```javascript
+λ npm install --save-dev -g cucumber
+```
