@@ -4,6 +4,7 @@
 * [GitHub](https://github.com/jcarlosvale/AprendendoNode)
 * [Node-Fetch](https://www.npmjs.com/package/node-fetch)
 * [Express Generator](https://expressjs.com/en/starter/generator.html)
+* [Selenium](https://www.npmjs.com/package/selenium-webdriver)
 
 ## Hello World
 
@@ -396,5 +397,14 @@ jasmine init
 ## Cucumber
 
 ```javascript
-λ npm install --save-dev -g cucumber
+λ npm install -g cucumber
 ```
+
+* execute
+
+```javascript
+ node .\node_modules\cucumber\bin\cucumber-js features\
+```
+
+## Selenium
+* install
