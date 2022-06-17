@@ -5,6 +5,8 @@
 * [Node-Fetch](https://www.npmjs.com/package/node-fetch)
 * [Express Generator](https://expressjs.com/en/starter/generator.html)
 * [Selenium](https://www.npmjs.com/package/selenium-webdriver)
+* [[Jest](https://jestjs.io/docs/getting-started)]
+* [Cypress](https://docs.cypress.io/guides/getting-started/installing-cypress)
 
 ## Hello World
 
@@ -407,4 +409,42 @@ jasmine init
 ```
 
 ## Selenium
+
 * install
+```javascript
+λ npm install selenium-webdriver
+```
+
+* download and install the [DRIVER](https://www.npmjs.com/package/selenium-webdriver)
+
+## JEST
+
+* install 
+
+```javascript
+npm install --save-dev jest
+```
+
+* execute
+```javascript
+.\node_modules\.bin\jest.cmd
+```
+
+## Cypress
+
+* install
+
+```javascript
+λ npm install cypress --save-dev
+```
+
+* run
+```javascript
+λ .\node_modules\.bin\cypress.cmd open
+```
+
+or
+
+```javascript
+λ .\node_modules\.bin\cypress.cmd run -b chrome
+```
