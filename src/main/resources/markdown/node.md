@@ -27,6 +27,11 @@ server.listen(port, hostname, () => {
 });
 ````
 
+**Run**
+```javascript
+node app.js
+```
+
 ## CRUD using FileSystem
 
 ```javascript
