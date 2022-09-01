@@ -1,5 +1,8 @@
 package tests.leetcode.challenge30days.dataStructure;
 
+import lombok.Builder;
+
+@Builder
 public class TreeNode {
     public int val;
     public TreeNode left;
