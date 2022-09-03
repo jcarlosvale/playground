@@ -224,7 +224,8 @@ public class Util {
         //BUILDER
         var entityFields = getEntityFields().split("\n");
         System.out.println(Arrays.toString(entityFields));
-        generateBuilder(entityFields, "entity");
+        //generateBuilder(entityFields, "entity");
+        generateBuilder(entityFields, "request");
 
     }
 
