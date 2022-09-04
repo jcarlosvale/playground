@@ -1,4 +1,4 @@
-package tests.leetcode.challenge30days.binaryTree;
+package tests.leetcode.challenge30days.september2022;
 
 import tests.leetcode.challenge30days.dataStructure.TreeNode;
 /**
