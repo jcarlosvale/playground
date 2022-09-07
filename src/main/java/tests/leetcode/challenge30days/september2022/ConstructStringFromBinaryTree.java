@@ -46,11 +46,18 @@ public class ConstructStringFromBinaryTree {
         if (root == null) return "";
 
         if (root.left == null) {
-            return root.val + "()";
+            if (root.right != null) {
+                return root.val + "()" + "(" + preOrder(root.right) + ")";
+            } else {
+                return "" + root.val;
+            }
         } else {
-            return root.val + "(";
+            if (root.right == null) {
+                return root.val + "(" + preOrder(root.left) + ")";
+            } else {
+                return root.val + "(" + preOrder(root.left) + ")" + "(" + preOrder(root.right) + ")";
+            }
         }
-
     }
 
 }
