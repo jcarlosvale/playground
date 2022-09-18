@@ -3,6 +3,7 @@ package util;
 import lombok.ToString;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -28,6 +29,43 @@ public class Util {
     }
 
     static List<Campo> getCampos() {
+        List<Campo> result = new ArrayList<>();
+        String campos =
+                        "    isn_fornecedor SERIAL PRIMARY KEY NOT NULL,\n" +
+                        "    des_razao_social varchar(35) NULL,\n" +
+                        "    des_nome_fantasia varchar(25) NULL,\n" +
+                        "    num_cnpj_cpf varchar(14) NULL,\n" +
+                        "    num_inscricao_estadual varchar(15) NULL,\n" +
+                        "    num_rg varchar(15) NULL,\n" +
+                        "    des_rua varchar(35) NULL,\n" +
+                        "    des_numero_rua varchar(10) NULL,\n" +
+                        "    des_complemento varchar(25) NULL,\n" +
+                        "    des_bairro varchar(25) NULL,\n" +
+                        "    des_cidade varchar(25) NULL,\n" +
+                        "    des_uf varchar(2) NULL,\n" +
+                        "    num_cep varchar(8) NULL,\n" +
+                        "    num_fone varchar(20) NULL,\n" +
+                        "    des_email varchar(45) NULL,\n" +
+                        "    cod_ibge int NULL,\n" +
+                        "    nom_contato varchar(25) NULL,\n" +
+                        "    des_observacao varchar(500) NULL,\n" +
+                        "    flg_bloqueado boolean NOT NULL";
+
+        for(String linha : campos.split(",")) {
+            String [] values = linha.trim().split(" ");
+
+            Campo campo = new Campo();
+            campo.nomeBanco = values[0].trim();
+            campo.type = values[1].trim();
+            campo.isNull = values.length == 3;
+
+            result.add(campo);
+        }
+
+        return result;
+    }
+
+    static List<Campo> getCampos2() {
         List<Campo> result = new ArrayList<>();
         String campos =
                 "    cod_produto int NOT NULL,\n" +
@@ -79,6 +117,86 @@ public class Util {
     }
 
     static String getEntityFields() {
+        return "    @Id\n" +
+                "    @GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
+                "    @Column(name=\"isn_fornecedor\")\n" +
+                "    @NotNull(message = \"O id fornecedor nao pode ser nulo\")\n" +
+                "    private Integer id;\n" +
+                "\n" +
+                "    @Column(name=\"des_razao_social\")\n" +
+                "    @Size(max=35, message = \"Tamanho maximo descricao razao social de 35 caracteres\")\n" +
+                "    private String descricaoRazaoSocial;\n" +
+                "\n" +
+                "    @Column(name=\"des_nome_fantasia\")\n" +
+                "    @Size(max=25, message = \"Tamanho maximo descricao nome fantasia de 25 caracteres\")\n" +
+                "    private String descricaoNomeFantasia;\n" +
+                "\n" +
+                "    @Column(name=\"num_cnpj_cpf\")\n" +
+                "    @Size(max=14, message = \"Tamanho maximo numero cnpj cpf de 14 caracteres\")\n" +
+                "    private String numeroCnpjCpf;\n" +
+                "\n" +
+                "    @Column(name=\"num_inscricao_estadual\")\n" +
+                "    @Size(max=15, message = \"Tamanho maximo numero inscricao estadual de 15 caracteres\")\n" +
+                "    private String numeroInscricaoEstadual;\n" +
+                "\n" +
+                "    @Column(name=\"num_rg\")\n" +
+                "    @Size(max=15, message = \"Tamanho maximo numero rg de 15 caracteres\")\n" +
+                "    private String numeroRg;\n" +
+                "\n" +
+                "    @Column(name=\"des_rua\")\n" +
+                "    @Size(max=35, message = \"Tamanho maximo descricao rua de 35 caracteres\")\n" +
+                "    private String descricaoRua;\n" +
+                "\n" +
+                "    @Column(name=\"des_numero_rua\")\n" +
+                "    @Size(max=10, message = \"Tamanho maximo descricao numero rua de 10 caracteres\")\n" +
+                "    private String descricaoNumeroRua;\n" +
+                "\n" +
+                "    @Column(name=\"des_complemento\")\n" +
+                "    @Size(max=25, message = \"Tamanho maximo descricao complemento de 25 caracteres\")\n" +
+                "    private String descricaoComplemento;\n" +
+                "\n" +
+                "    @Column(name=\"des_bairro\")\n" +
+                "    @Size(max=25, message = \"Tamanho maximo descricao bairro de 25 caracteres\")\n" +
+                "    private String descricaoBairro;\n" +
+                "\n" +
+                "    @Column(name=\"des_cidade\")\n" +
+                "    @Size(max=25, message = \"Tamanho maximo descricao cidade de 25 caracteres\")\n" +
+                "    private String descricaoCidade;\n" +
+                "\n" +
+                "    @Column(name=\"des_uf\")\n" +
+                "    @Size(max=2, message = \"Tamanho maximo descricao uf de 2 caracteres\")\n" +
+                "    private String descricaoUf;\n" +
+                "\n" +
+                "    @Column(name=\"num_cep\")\n" +
+                "    @Size(max=8, message = \"Tamanho maximo numero cep de 8 caracteres\")\n" +
+                "    private String numeroCep;\n" +
+                "\n" +
+                "    @Column(name=\"num_fone\")\n" +
+                "    @Size(max=20, message = \"Tamanho maximo numero fone de 20 caracteres\")\n" +
+                "    private String numeroFone;\n" +
+                "\n" +
+                "    @Column(name=\"des_email\")\n" +
+                "    @Size(max=45, message = \"Tamanho maximo descricao email de 45 caracteres\")\n" +
+                "    private String descricaoEmail;\n" +
+                "\n" +
+                "    @Column(name=\"cod_ibge\")\n" +
+                "    @Positive(message = \"O codigo ibge deve ser positivo\")\n" +
+                "    private Integer codigoIbge;\n" +
+                "\n" +
+                "    @Column(name=\"nom_contato\")\n" +
+                "    @Size(max=25, message = \"Tamanho maximo nom contato de 25 caracteres\")\n" +
+                "    private String nomContato;\n" +
+                "\n" +
+                "    @Column(name=\"des_observacao\")\n" +
+                "    @Size(max=500, message = \"Tamanho maximo descricao observacao de 500 caracteres\")\n" +
+                "    private String descricaoObservacao;\n" +
+                "\n" +
+                "    @Column(name=\"flg_bloqueado\")\n" +
+                "    @NotNull(message = \"O flag bloqueado nao pode ser nulo\")\n" +
+                "    private Boolean flagBloqueado;";
+    }
+
+    static String getEntityFields2() {
         return
                         "    @Size(max=7, message = \"Tamanho maximo do codigo produto de 7 caracteres\")\n" +
                         "    @NotBlank(message=\"Codigo produto nao pode ser nulo ou vazio\")\n" +
@@ -213,22 +331,6 @@ public class Util {
                         "    private Boolean flagForaLinha;";
     }
 
-    public static void main(String[] args) {
-//        var campos = getCampos();
-//
-//        for(Campo campo : campos) {
-//            System.out.println(generateAttribute(campo));
-//            System.out.println();
-//        }
-
-        //BUILDER
-        var entityFields = getEntityFields().split("\n");
-        System.out.println(Arrays.toString(entityFields));
-        //generateBuilder(entityFields, "entity");
-        generateBuilder(entityFields, "request");
-
-    }
-
     private static void generateBuilder(String[] entityFields, String fromObject) {
         for(String str : entityFields) {
             if (str.trim().startsWith("@") || str.trim().length() < 5) continue;
@@ -317,6 +419,134 @@ public class Util {
 
         nomeBanco = nomeBanco.replace("_", " ");
         return nomeBanco;
+    }
+
+    public static void main(String[] args) {
+        //ENTITY
+//        var campos = getCampos();
+//
+//        for(Campo campo : campos) {
+//            System.out.println(generateAttribute(campo));
+//            System.out.println();
+//        }
+
+        //BUILDER
+//        var entityFields = getEntityFields().split("\n");
+//        generateBuilder(entityFields, "entity");
+//        generateBuilder(entityFields, "request");
+
+        //CONSTANTS
+//        var entityFields = getEntityFields().split("\n");
+//        generateConstants(entityFields);
+
+        //ASSERT
+//        var entityFields = getEntityFields().split("\n");
+//        generateAssertFields(entityFields, "entity");
+
+        //VALID FIELDS
+//        generateValidFields();
+
+        //INVALID FIELDS
+//        String constants = getConstants();
+//        generateInValidFields(constants);
+
+        //SET FIELDS
+        var entityFields = getEntityFields().split("\n");
+        String constants = getConstants();
+        generateSetFields(entityFields, constants, "request");
+    }
+
+    private static void generateSetFields(String[] entityFields, String constants, String entity) {
+        List<String> constantes = getConstantesFromString(constants);
+        List<String> fieldsList = getFieldsFromArray(entityFields);
+        for (int i = 0; i < constantes.size(); i++) {
+            String field = fieldsList.get(i);
+            System.out.println(entity + ".set" + field + "(" + constantes.get(i) + ");");
+        }
+    }
+
+    private static List<String> getFieldsFromArray(String[] entityFields) {
+        List<String> fieldList = new ArrayList<>();
+        for (String str : entityFields) {
+            if (str.trim().startsWith("@") || str.trim().length() < 5) continue;
+            String[] fields = str.trim().split(" ");
+            fieldList.add(fields[2].substring(0,1).toUpperCase() + fields[2].substring(1).replace(";", ""));
+        }
+        return fieldList;
+    }
+
+    private static void generateInValidFields(String constants) {
+        List<String> constantes = getConstantesFromString(constants);
+
+        //System.out.println("arguments(" + String.join(", ", constantes) + "),");
+        for (int i = 0; i < constantes.size(); i++) {
+            var copyList = new ArrayList<>(constantes);
+            copyList.set(i, constantes.get(i) + "+ \"1\"");
+            System.out.println("arguments(" + String.join(", ", copyList) + ", \"\"),");
+        }
+    }
+
+    private static List<String> getConstantesFromString(String constants) {
+        List<String> lines = Arrays.stream(constants.split("\n"))
+                .sequential()
+                .collect(Collectors.toList());
+
+        List<String> constantes = new ArrayList<>();
+        for(String line : lines) {
+            String preLine = line.split(" = ")[0];
+            int qtd = preLine.split(" ").length;
+            constantes.add(preLine.split(" ")[qtd-1]);
+        }
+        return constantes;
+    }
+
+    private static String getConstants() {
+        return
+                "    Integer ID = 1;\n" +
+                "    String DESCRICAO_RAZAO_SOCIAL = \"X\".repeat(Math.max(0, 35));\n" +
+                "    String DESCRICAO_NOME_FANTASIA = \"X\".repeat(Math.max(0, 25));\n" +
+                "    String NUMERO_CNPJ_CPF = \"X\".repeat(Math.max(0, 14));\n" +
+                "    String NUMERO_INSCRICAO_ESTADUAL = \"X\".repeat(Math.max(0, 15));\n" +
+                "    String NUMERO_RG = \"X\".repeat(Math.max(0, 15));\n" +
+                "    String DESCRICAO_RUA = \"X\".repeat(Math.max(0, 35));\n" +
+                "    String DESCRICAO_NUMERO_RUA = \"X\".repeat(Math.max(0, 10));\n" +
+                "    String DESCRICAO_COMPLEMENTO = \"X\".repeat(Math.max(0, 25));\n" +
+                "    String DESCRICAO_BAIRRO = \"X\".repeat(Math.max(0, 25));\n" +
+                "    String DESCRICAO_CIDADE = \"X\".repeat(Math.max(0, 25));\n" +
+                "    String DESCRICAO_UF = \"X\".repeat(Math.max(0, 2));\n" +
+                "    String NUMERO_CEP = \"X\".repeat(Math.max(0, 8));\n" +
+                "    String NUMERO_FONE = \"X\".repeat(Math.max(0, 20));\n" +
+                "    String DESCRICAO_EMAIL = \"X\".repeat(Math.max(0, 45));\n" +
+                "    Integer CODIGO_IBGE = 2;\n" +
+                "    String NOME_CONTATO = \"X\".repeat(Math.max(0, 25));\n" +
+                "    String DESCRICAO_OBSERVACAO = \"X\".repeat(Math.max(0, 500));\n" +
+                "    Boolean FLAG_BLOQUEADO = true;";
+    }
+
+    private static void generateValidFields(String constants) {
+        List<String> constantes = getConstantesFromString(constants);
+
+        System.out.println("arguments(" + String.join(", ", constantes) + "),");
+        for (int i = 0; i < constantes.size(); i++) {
+            constantes.set(i, null);
+            System.out.println("arguments(" + String.join(", ", constantes) + "),");
+        }
+    }
+
+    private static void generateAssertFields(String[] entityFields, String entity) {
+        for (String str : entityFields) {
+            if (str.trim().startsWith("@") || str.trim().length() < 5) continue;
+            String[] fields = str.trim().split(" ");
+            System.out.println("assertThat(" + entity + ".get" + fields[2].substring(0,1).toUpperCase() + fields[2].substring(1).replace(";", "") + "()).isEqualTo();" );
+        }
+    }
+
+    private static void generateConstants(String[] entityFields) {
+        for(String str : entityFields) {
+            if (str.trim().startsWith("@") || str.trim().length() < 5) continue;
+            String [] fields = str.trim().split(" ");
+            System.out.println(fields[1] + " " + fields[2].toUpperCase().replace(";","") + " = " + "\"X\".repeat(Math.max(0, ));");
+        }
     }
 
 }
