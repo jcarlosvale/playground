@@ -31,25 +31,9 @@ public class Util {
     static List<Campo> getCampos() {
         List<Campo> result = new ArrayList<>();
         String campos =
-                        "    isn_fornecedor SERIAL PRIMARY KEY NOT NULL,\n" +
-                        "    des_razao_social varchar(35) NULL,\n" +
-                        "    des_nome_fantasia varchar(25) NULL,\n" +
-                        "    num_cnpj_cpf varchar(14) NULL,\n" +
-                        "    num_inscricao_estadual varchar(15) NULL,\n" +
-                        "    num_rg varchar(15) NULL,\n" +
-                        "    des_rua varchar(35) NULL,\n" +
-                        "    des_numero_rua varchar(10) NULL,\n" +
-                        "    des_complemento varchar(25) NULL,\n" +
-                        "    des_bairro varchar(25) NULL,\n" +
-                        "    des_cidade varchar(25) NULL,\n" +
-                        "    des_uf varchar(2) NULL,\n" +
-                        "    num_cep varchar(8) NULL,\n" +
-                        "    num_fone varchar(20) NULL,\n" +
-                        "    des_email varchar(45) NULL,\n" +
-                        "    cod_ibge int NULL,\n" +
-                        "    nom_contato varchar(25) NULL,\n" +
-                        "    des_observacao varchar(500) NULL,\n" +
-                        "    flg_bloqueado boolean NOT NULL";
+                        "    cod_ean varchar(14) PRIMARY KEY NOT NULL,\n" +
+                        "    cod_produto int NOT NULL,\n" +
+                        "    qtd_fracao_venda int NULL";
 
         for(String linha : campos.split(",")) {
             String [] values = linha.trim().split(" ");
@@ -423,12 +407,12 @@ public class Util {
 
     public static void main(String[] args) {
         //ENTITY
-//        var campos = getCampos();
-//
-//        for(Campo campo : campos) {
-//            System.out.println(generateAttribute(campo));
-//            System.out.println();
-//        }
+        var campos = getCampos();
+
+        for(Campo campo : campos) {
+            System.out.println(generateAttribute(campo));
+            System.out.println();
+        }
 
         //BUILDER
 //        var entityFields = getEntityFields().split("\n");
@@ -439,7 +423,7 @@ public class Util {
 //        var entityFields = getEntityFields().split("\n");
 //        generateConstants(entityFields);
 
-        //ASSERT
+        //ASSERT --> assertThat(entity.getNumeroRg()).isEqualTo();
 //        var entityFields = getEntityFields().split("\n");
 //        generateAssertFields(entityFields, "entity");
 
@@ -451,9 +435,32 @@ public class Util {
 //        generateInValidFields(constants);
 
         //SET FIELDS
-        var entityFields = getEntityFields().split("\n");
-        String constants = getConstants();
-        generateSetFields(entityFields, constants, "request");
+//        var entityFields = getEntityFields().split("\n");
+//        String constants = getConstants();
+//        generateSetFields(entityFields, constants, "request");
+
+        //GET BY ID TEMPLATE --> .codigo(entity.getCodigo())
+//        List<String> fieldsList = getFieldsFromArray(getEntityFields().split("\n"));
+//        generateGetById(fieldsList);
+
+        //ASSERT THAT --> assertThat(body.getCodigo()).isEqualTo(requestNewDto.getCodigo());
+//        List<String> fieldsList = getFieldsFromArray(getEntityFields().split("\n"));
+//        generateAssertFields(fieldsList, "body", "requestNewDto");
+
+    }
+
+    private static void generateAssertFields(List<String> fieldsList, String from, String to) {
+        for(String field : fieldsList) {
+//            String formatedField = field.substring(0,1).toLowerCase() + field.substring(1);
+            System.out.println("assertThat(" + from + ".get" + field + "()).isEqualTo("+ to + ".get" + field + "());");
+        }
+    }
+
+    private static void generateGetById(List<String> fieldsList) {
+        for(String field : fieldsList) {
+//            String formatedField = field.replace(";", "");
+            System.out.println("." + field.substring(0,1).toLowerCase() + field.substring(1) + "(entity.get" + field + "())");
+        }
     }
 
     private static void generateSetFields(String[] entityFields, String constants, String entity) {
