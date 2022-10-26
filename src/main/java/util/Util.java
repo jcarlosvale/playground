@@ -101,137 +101,142 @@ public class Util {
     }
 
     static String getEntityFields() {
-        return  "    @Id\n" +
-                "    @Positive(message=\"Codigo produto nao pode ser negativo\")\n" +
-                "    @Column(name=\"cod_produto\")\n" +
-                "    private Integer codigo;\n" +
-                "\n" +
-                "    @Column(name=\"des_produto\")\n" +
-                "    @Size(max=40, message = \"Tamanho maximo descricao produto de 40 caracteres\")\n" +
-                "    private String descricaoProduto;\n" +
-                "\n" +
-                "    @Column(name=\"des_resumida\")\n" +
-                "    @Size(max=24, message = \"Tamanho maximo descricao resumida de 24 caracteres\")\n" +
-                "    private String descricaoResumida;\n" +
-                "\n" +
-                "    @Column(name=\"des_completa\")\n" +
-                "    @Size(max=60, message = \"Tamanho maximo descricao completa de 60 caracteres\")\n" +
-                "    private String descricaoCompleta;\n" +
-                "\n" +
-                "    @Column(name=\"des_apresentacao\")\n" +
-                "    @Size(max=25, message = \"Tamanho maximo descricao apresentacao de 25 caracteres\")\n" +
-                "    private String descricaoApresentacao;\n" +
-                "\n" +
-                "    @Column(name=\"des_concentracao\")\n" +
-                "    @Size(max=25, message = \"Tamanho maximo descricao concentracao de 25 caracteres\")\n" +
-                "    private String descricaoConcentracao;\n" +
-                "\n" +
-                "    @Column(name=\"dat_implantacao\")\n" +
-                "    @JsonFormat(pattern=\"dd-MM-yyyy HH:mm:ss\")\n" +
-                "    private LocalDateTime dataImplantacao;\n" +
-                "\n" +
-                "    @Column(name=\"des_unidade_venda\")\n" +
-                "    @Size(max=3, message = \"Tamanho maximo descricao unidade venda de 3 caracteres\")\n" +
-                "    private String descricaoUnidadeVenda;\n" +
-                "\n" +
-                "    @Column(name=\"des_unidade_compra\")\n" +
-                "    @Size(max=3, message = \"Tamanho maximo descricao unidade compra de 3 caracteres\")\n" +
-                "    private String descricaoUnidadeCompra;\n" +
-                "\n" +
-                "    @Column(name=\"qtd_fracao_venda\")\n" +
-                "    @Positive(message = \"O quantidade fracao venda deve ser positivo\")\n" +
-                "    private Integer quantidadeFracaoVenda;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"cod_classificacao\")\n" +
-                "    private Classificacao classificacao;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"isn_fabricante\")\n" +
-                "    private Fabricante fabricante;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"isn_substancias_basicas\")\n" +
-                "    private SubstanciasBasicas substanciasBasicas;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"isn_grupo_de_preco\")\n" +
-                "    private GrupoDePrecos grupoDePrecos;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"cod_ean\")\n" +
-                "    private ProdutoEAN produtoEAN;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"cod_produto_grade\")\n" +
-                "    private Produto produtoGrade;\n" +
-                "\n" +
-                "    @Column(name=\"tip_controle_preco\")\n" +
-                "    @Size(max=1, message = \"Tamanho maximo tipo controle preco de 1 caracteres\")\n" +
-                "    private String tipoControlePreco;\n" +
-                "\n" +
-                "    @Column(name=\"tip_lista\")\n" +
-                "    @Size(max=1, message = \"Tamanho maximo tipo lista de 1 caracteres\")\n" +
-                "    private String tipoLista;\n" +
-                "\n" +
-                "    @Column(name=\"tip_controle_venda\")\n" +
-                "    @Size(max=1, message = \"Tamanho maximo tipo controle venda de 1 caracteres\")\n" +
-                "    private String tipoControleVenda;\n" +
-                "\n" +
-                "    @Column(name=\"tip_receita\")\n" +
-                "    @Size(max=2, message = \"Tamanho maximo tipo receita de 2 caracteres\")\n" +
-                "    private String tipoReceita;\n" +
-                "\n" +
-                "    @Column(name=\"tip_origem_mercadoria\")\n" +
-                "    @Size(max=1, message = \"Tamanho maximo tipo origem mercadoria de 1 caracteres\")\n" +
-                "    private String tipoOrigemMercadoria;\n" +
-                "\n" +
-                "    @Column(name=\"tip_produto\")\n" +
-                "    @Size(max=2, message = \"Tamanho maximo tipo produto de 2 caracteres\")\n" +
-                "    private String tipoProduto;\n" +
-                "\n" +
-                "    @Column(name=\"flg_preco_tabelado\")\n" +
-                "    @NotNull(message = \"O flag preco tabelado nao pode ser nulo\")\n" +
-                "    private Boolean flagPrecoTabelado;\n" +
-                "\n" +
-                "    @Column(name=\"flg_imprime_etiqueta\")\n" +
-                "    @NotNull(message = \"O flag imprime etiqueta nao pode ser nulo\")\n" +
-                "    private Boolean flagImprimeEtiqueta;\n" +
-                "\n" +
-                "    @Column(name=\"qtd_embalagem_venda\")\n" +
-                "    @Positive(message = \"O quantidade embalagem venda deve ser positivo\")\n" +
-                "    private Integer quantidadeEmbalagemVenda;\n" +
-                "\n" +
-                "    @Column(name=\"num_registro_ms\")\n" +
-                "    @Size(max=20, message = \"Tamanho maximo numero registro ms de 20 caracteres\")\n" +
-                "    private String numeroRegistroMs;\n" +
-                "\n" +
-                "    @ManyToOne(fetch = FetchType.LAZY)\n" +
-                "    @JoinColumn(name=\"isn_ncm\")\n" +
-                "    private NCM ncm;\n" +
-                "\n" +
-                "    @Column(name=\"prc_referencia_farmacia_popular\")\n" +
-                "    @NotNull(message = \"O preco referencia farmacia popular nao pode ser nulo\")\n" +
-                "    private BigDecimal precoReferenciaFarmaciaPopular;\n" +
-                "\n" +
-                "    @Column(name=\"flg_uso_continuo\")\n" +
-                "    private Boolean flagUsoContinuo;\n" +
-                "\n" +
-                "    @Column(name=\"cod_cest\")\n" +
-                "    @Size(max=7, message = \"Tamanho maximo codigo cest de 7 caracteres\")\n" +
-                "    private String codigoCest;\n" +
-                "\n" +
-                "    @Column(name=\"tip_medicamento\")\n" +
-                "    @Size(max=1, message = \"Tamanho maximo tipo medicamento de 1 caracteres\")\n" +
-                "    private String tipoMedicamento;\n" +
-                "\n" +
-                "    @Column(name=\"flg_controla_lote\")\n" +
-                "    @NotNull(message = \"O flag controla lote nao pode ser nulo\")\n" +
-                "    private Boolean flagControlaLote;\n" +
-                "\n" +
-                "    @Column(name=\"flg_fora_linha\")\n" +
-                "    @NotNull(message = \"O flag fora linha nao pode ser nulo\")\n" +
-                "    private Boolean flagForaLinha;";
+        return
+                "    @Id\n" +
+                        "    @GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
+                        "    @Column(name=\"isn_produto\")\n" +
+                        "    private Integer id;\n" +
+                        "\n" +
+                        "    @Size(max=25, message = \"Tamanho maximo codigo produto de 25 caracteres\")\n" +
+                        "    @Column(name=\"cod_produto\")\n" +
+                        "    private String codigo;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_produto\")\n" +
+                        "    @Size(max=40, message = \"Tamanho maximo descricao produto de 40 caracteres\")\n" +
+                        "    private String descricaoProduto;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_resumida\")\n" +
+                        "    @Size(max=24, message = \"Tamanho maximo descricao resumida de 24 caracteres\")\n" +
+                        "    private String descricaoResumida;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_completa\")\n" +
+                        "    @Size(max=60, message = \"Tamanho maximo descricao completa de 60 caracteres\")\n" +
+                        "    private String descricaoCompleta;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_apresentacao\")\n" +
+                        "    @Size(max=25, message = \"Tamanho maximo descricao apresentacao de 25 caracteres\")\n" +
+                        "    private String descricaoApresentacao;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_concentracao\")\n" +
+                        "    @Size(max=25, message = \"Tamanho maximo descricao concentracao de 25 caracteres\")\n" +
+                        "    private String descricaoConcentracao;\n" +
+                        "\n" +
+                        "    @Column(name=\"dat_implantacao\")\n" +
+                        "    @JsonFormat(pattern=\"dd-MM-yyyy HH:mm:ss\")\n" +
+                        "    private LocalDateTime dataImplantacao;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_unidade_venda\")\n" +
+                        "    @Size(max=3, message = \"Tamanho maximo descricao unidade venda de 3 caracteres\")\n" +
+                        "    private String descricaoUnidadeVenda;\n" +
+                        "\n" +
+                        "    @Column(name=\"des_unidade_compra\")\n" +
+                        "    @Size(max=3, message = \"Tamanho maximo descricao unidade compra de 3 caracteres\")\n" +
+                        "    private String descricaoUnidadeCompra;\n" +
+                        "\n" +
+                        "    @Column(name=\"qtd_fracao_venda\")\n" +
+                        "    @Positive(message = \"O quantidade fracao venda deve ser positivo\")\n" +
+                        "    private Integer quantidadeFracaoVenda;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"cod_classificacao\")\n" +
+                        "    private Classificacao classificacao;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"isn_fabricante\")\n" +
+                        "    private Fabricante fabricante;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"isn_substancias_basicas\")\n" +
+                        "    private SubstanciasBasicas substanciasBasicas;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"isn_grupo_de_preco\")\n" +
+                        "    private GrupoDePrecos grupoDePrecos;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"cod_ean\")\n" +
+                        "    private ProdutoEAN produtoEAN;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"isn_produto_grade\")\n" +
+                        "    private Produto produtoGrade;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_controle_preco\")\n" +
+                        "    @Size(max=1, message = \"Tamanho maximo tipo controle preco de 1 caracteres\")\n" +
+                        "    private String tipoControlePreco;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_lista\")\n" +
+                        "    @Size(max=1, message = \"Tamanho maximo tipo lista de 1 caracteres\")\n" +
+                        "    private String tipoLista;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_controle_venda\")\n" +
+                        "    @Size(max=1, message = \"Tamanho maximo tipo controle venda de 1 caracteres\")\n" +
+                        "    private String tipoControleVenda;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_receita\")\n" +
+                        "    @Size(max=2, message = \"Tamanho maximo tipo receita de 2 caracteres\")\n" +
+                        "    private String tipoReceita;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_origem_mercadoria\")\n" +
+                        "    @Size(max=1, message = \"Tamanho maximo tipo origem mercadoria de 1 caracteres\")\n" +
+                        "    private String tipoOrigemMercadoria;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_produto\")\n" +
+                        "    @Size(max=2, message = \"Tamanho maximo tipo produto de 2 caracteres\")\n" +
+                        "    private String tipoProduto;\n" +
+                        "\n" +
+                        "    @Column(name=\"flg_preco_tabelado\")\n" +
+                        "    @NotNull(message = \"O flag preco tabelado nao pode ser nulo\")\n" +
+                        "    private Boolean flagPrecoTabelado;\n" +
+                        "\n" +
+                        "    @Column(name=\"flg_imprime_etiqueta\")\n" +
+                        "    @NotNull(message = \"O flag imprime etiqueta nao pode ser nulo\")\n" +
+                        "    private Boolean flagImprimeEtiqueta;\n" +
+                        "\n" +
+                        "    @Column(name=\"qtd_embalagem_venda\")\n" +
+                        "    @Positive(message = \"O quantidade embalagem venda deve ser positivo\")\n" +
+                        "    private Integer quantidadeEmbalagemVenda;\n" +
+                        "\n" +
+                        "    @Column(name=\"num_registro_ms\")\n" +
+                        "    @Size(max=20, message = \"Tamanho maximo numero registro ms de 20 caracteres\")\n" +
+                        "    private String numeroRegistroMs;\n" +
+                        "\n" +
+                        "    @ManyToOne(fetch = FetchType.LAZY)\n" +
+                        "    @JoinColumn(name=\"isn_ncm\")\n" +
+                        "    private NCM ncm;\n" +
+                        "\n" +
+                        "    @Column(name=\"prc_referencia_farmacia_popular\")\n" +
+                        "    @NotNull(message = \"O preco referencia farmacia popular nao pode ser nulo\")\n" +
+                        "    private BigDecimal precoReferenciaFarmaciaPopular;\n" +
+                        "\n" +
+                        "    @Column(name=\"flg_uso_continuo\")\n" +
+                        "    private Boolean flagUsoContinuo;\n" +
+                        "\n" +
+                        "    @Column(name=\"cod_cest\")\n" +
+                        "    @Size(max=7, message = \"Tamanho maximo codigo cest de 7 caracteres\")\n" +
+                        "    private String codigoCest;\n" +
+                        "\n" +
+                        "    @Column(name=\"tip_medicamento\")\n" +
+                        "    @Size(max=1, message = \"Tamanho maximo tipo medicamento de 1 caracteres\")\n" +
+                        "    private String tipoMedicamento;\n" +
+                        "\n" +
+                        "    @Column(name=\"flg_controla_lote\")\n" +
+                        "    @NotNull(message = \"O flag controla lote nao pode ser nulo\")\n" +
+                        "    private Boolean flagControlaLote;\n" +
+                        "\n" +
+                        "    @Column(name=\"flg_fora_linha\")\n" +
+                        "    @NotNull(message = \"O flag fora linha nao pode ser nulo\")\n" +
+                        "    private Boolean flagForaLinha;";
     }
 
     private static void generateBuilder(String[] entityFields, String fromObject) {
@@ -339,8 +344,8 @@ public class Util {
 //        }
 
         //BUILDER --> .codigo(entity.getCodigo())
-        var entityFields = getEntityFields().split("\n");
-        generateBuilder(entityFields, "entity");
+//        var entityFields = getEntityFields().split("\n");
+//        generateBuilder(entityFields, "entity");
 //        generateBuilder(entityFields, "request");
 
         //CONSTANTS --> String CODIGO = "X".repeat(Math.max(0,));
@@ -356,8 +361,8 @@ public class Util {
 //        generateValidFields(getConstants());
 
         //INVALID FIELDS
-//        String constants = getConstants();
-//        generateInValidFields(constants);
+        String constants = getConstants();
+        generateInValidFields(constants);
 
         //SET FIELDS --> request.setCodigo(CODIGO);
 //        var entityFields = getEntityFields().split("\n");
@@ -381,6 +386,12 @@ public class Util {
 //        var entityFields = getEntityFields().split("\n");
 //        generateConstantsWithoutValue(entityFields);
 
+//        //CONSTANTES ID, CODIGO, DESCRICAO_PRODUTO,
+//
+//        List<String> constantes = getConstantesFromString(getConstants());
+//        String delimiter = ",\n";
+//        String str =  String.join(delimiter, constantes);
+//        System.out.println(str);
     }
 
     private static void generateAssertFields(List<String> fieldsList, String from, String to) {
@@ -443,9 +454,40 @@ public class Util {
 
     private static String getConstants() {
         return
-                "    String CODIGO = \"X\".repeat(Math.max(0,14));\n" +
-                "    Integer CODIGO_PRODUTO = 100;\n" +
-                "    Integer QUANTIDADEFRACAOVENDA = 1;";
+                "    Integer ID = 1;\n" +
+                        "    String CODIGO = \"X\".repeat(Math.max(0,25));\n" +
+                        "    String DESCRICAO_PRODUTO = \"X\".repeat(Math.max(0,40));\n" +
+                        "    String DESCRICAO_RESUMIDA = \"X\".repeat(Math.max(0,24));\n" +
+                        "    String DESCRICAO_COMPLETA = \"X\".repeat(Math.max(0,60));\n" +
+                        "    String DESCRICAO_APRESENTACAO = \"X\".repeat(Math.max(0,25));\n" +
+                        "    String DESCRICAO_CONCENTRACAO = \"X\".repeat(Math.max(0,25));\n" +
+                        "    LocalDateTime DATA_IMPLANTACAO = LocalDateTime.of(2022,4,1,10,0,0);\n" +
+                        "    String DESCRICAO_UNIDADE_VENDA = \"X\".repeat(Math.max(0,3));\n" +
+                        "    String DESCRICAO_UNIDADE_COMPRA = \"X\".repeat(Math.max(0,3));\n" +
+                        "    Integer QUANTIDADE_FRACAO_VENDA = 100;\n" +
+                        "    Classificacao CLASSIFICACAO = ClassificacaoMock.entitiesToDatabase().get(0);\n" +
+                        "    Fabricante FABRICANTE = FabricanteMock.entitiesToDatabase().get(0);\n" +
+                        "    SubstanciasBasicas SUBSTANCIAS_BASICAS = SubstanciasBasicasMock.entitiesToDatabase().get(0);\n" +
+                        "    GrupoDePrecos GRUPO_DE_PRECOS = GrupoDePrecosMock.entitiesToDatabase().get(0);\n" +
+                        "    ProdutoEAN PRODUTO_EAN = ProdutoEANMock.entitiesToDatabase().get(0);\n" +
+                        "    Produto PRODUTO_GRADE = entitiesToDatabase().get(0);\n" +
+                        "    String TIPO_CONTROLE_PRECO = \"X\".repeat(Math.max(0,1));\n" +
+                        "    String TIPO_LISTA = \"X\".repeat(Math.max(0,1));\n" +
+                        "    String TIPO_CONTROLE_VENDA = \"X\".repeat(Math.max(0,1));\n" +
+                        "    String TIPO_RECEITA = \"X\".repeat(Math.max(0,2));\n" +
+                        "    String TIPO_ORIGEM_MERCADORIA = \"X\".repeat(Math.max(0,1));\n" +
+                        "    String TIPO_PRODUTO = \"X\".repeat(Math.max(0,2));\n" +
+                        "    Boolean FLAG_PRECO_TABELADO = true;\n" +
+                        "    Boolean FLAG_IMPRIME_ETIQUETA = true;\n" +
+                        "    Integer QUANTIDADE_EMBALAGEM_VENDA = 100;\n" +
+                        "    String NUMERO_REGISTRO_MS = \"X\".repeat(Math.max(0,20));\n" +
+                        "    NCM NCM = NCMMock.entitiesToDatabase().get(0);\n" +
+                        "    BigDecimal PRECO_REFERENCIA_FARMACIA_POPULAR = BigDecimal.valueOf(1.22);\n" +
+                        "    Boolean FLAG_USO_CONTINUO = true;\n" +
+                        "    String CODIGO_CEST = \"X\".repeat(Math.max(0,7));\n" +
+                        "    String TIPO_MEDICAMENTO = \"X\".repeat(Math.max(0,1));\n" +
+                        "    Boolean FLAG_CONTROLA_LOTE = true;\n" +
+                        "    Boolean FLAG_FORA_LINHA = true;";
     }
 
     private static void generateValidFields(String constants) {
