@@ -1,5 +1,16 @@
 package certification;
 
+
+class Parent {
+    void method(){}
+}
+
+abstract class AbstractSon extends Parent {
+
+    @Override
+    abstract void method();
+}
+
 public class KitchenSink {
     private int numForks;
 
