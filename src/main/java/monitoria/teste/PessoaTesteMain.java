@@ -1,14 +1,10 @@
 package monitoria.teste;
 
-import monitoria.Pessoa;
-
-import java.io.IOException;
-
 public class PessoaTesteMain {
 
     public static void main(String[] args) {
-        var pessoa = new Pessoa();
-
+        //var pessoa = new Pessoa();
+/*
         try {
             pessoa.setIdade(-10);
         } catch (RuntimeException e) {
@@ -20,6 +16,6 @@ public class PessoaTesteMain {
         }
 
         System.out.println(pessoa.getIdade());
-
+*/
     }
 }
