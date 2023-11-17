@@ -1,7 +1,5 @@
 package tests.leetcode.challenge30days;
 
-import java.util.*;
-
 /**
  * Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum
  * equals to k.
