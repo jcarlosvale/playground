@@ -1,7 +1,6 @@
 package certification;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class Test {
@@ -27,6 +26,12 @@ class Test {
     }
 
      public static void main(String[] args) {
-         System.out.println(taskOfPairing(List.of(0L, 8844194L, 2953613L)));
+         String prefixo = "BE_JV_006_";
+
+         for (int i = 1; i <= 40; i++) {
+             String numeroFormatado = String.format("%02d", i); // Formata o número para ter dois dígitos
+             String nomeArquivo = prefixo + numeroFormatado + ".json";
+             System.out.println(nomeArquivo);
+         }
      }
 }
