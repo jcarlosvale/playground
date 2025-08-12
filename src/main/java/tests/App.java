@@ -2,7 +2,11 @@ package tests;
 
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 
 class Solution {
     private boolean isMusic(String fileName) {
@@ -71,6 +75,38 @@ public class App
 {
     public static void main( String[] args )
     {
+        int cardSize = 5;
+        int frequency = 100_000;
+        int [] numbers = new int[51];
+        int [] stars = new int[13];
+        Set<Integer> selectedNumbers = new TreeSet<>();
+        Set<Integer> selectedStars = new TreeSet<>();
+        Random random = new Random();
+
+        while (selectedNumbers.size() < cardSize) {
+            int numero = random.nextInt(51);
+            if (numero == 0) {
+                continue; // Skip zero
+            }
+            numbers[numero] = numbers[numero] + 1;
+            if (numbers[numero] >= frequency) {
+                selectedNumbers.add(numero);
+            }
+        }
+
+        while (selectedStars.size() < 2) {
+            int numero = random.nextInt(13);
+            if (numero == 0) {
+                continue; // Skip zero
+            }
+            stars[numero] = stars[numero] + 1;
+            if (stars[numero] >= frequency) {
+                selectedStars.add(numero);
+            }
+        }
+
+        System.out.println(selectedNumbers);
+        System.out.println(selectedStars);
 
     }
 }
