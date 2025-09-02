@@ -1,4 +1,4 @@
-package ada.grafos;
+package ada;
 
 import java.util.LinkedList;
 
